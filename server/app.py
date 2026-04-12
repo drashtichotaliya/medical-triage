@@ -17,9 +17,9 @@ try:
 except Exception as e:
     raise ImportError("openenv is required. Install with: uv sync") from e
 
-from fastapi import Request
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
 
 try:
     from models import MedicalTriageAction, MedicalTriageObservation
@@ -38,40 +38,39 @@ app = create_app(
 )
 
 
-def _read_html():
+def _html() -> str:
     if os.path.exists(_INDEX_HTML):
         with open(_INDEX_HTML, "r", encoding="utf-8") as f:
             return f.read()
-    return "<h1>index.html not found at: " + _INDEX_HTML + "</h1>"
+    return "<h1>UI not found. Expected: " + _INDEX_HTML + "</h1>"
 
 
-# ── Middleware: serve index.html at / AND /web AND /web/ ─────────────────────
-# HuggingFace Spaces routes the browser to /web/ — we must handle that path.
-class ServeUIMiddleware(BaseHTTPMiddleware):
+# Paths that should return the UI
+_UI_PATHS = {"/", "", "/web", "/web/", "/index.html", "/web/index.html"}
+
+
+class UIMiddleware(BaseHTTPMiddleware):
+    """Serve index.html for all browser-navigation GET requests to known UI paths."""
     async def dispatch(self, request: Request, call_next):
-        path = request.url.path
-        if request.method == "GET" and path in ("/", "", "/web", "/web/"):
-            return HTMLResponse(content=_read_html(), status_code=200)
+        if request.method == "GET" and request.url.path in _UI_PATHS:
+            return HTMLResponse(content=_html(), status_code=200)
         return await call_next(request)
 
 
-app.add_middleware(ServeUIMiddleware)
+app.add_middleware(UIMiddleware)
 
 
-# ── Explicit routes as belt-and-suspenders ────────────────────────────────────
-@app.get("/web", include_in_schema=False)
-@app.get("/web/", include_in_schema=False)
-async def serve_web():
-    return HTMLResponse(content=_read_html(), status_code=200)
+# Explicit route declarations as belt-and-suspenders
+@app.get("/",           include_in_schema=False)
+@app.get("/web",        include_in_schema=False)
+@app.get("/web/",       include_in_schema=False)
+@app.get("/index.html", include_in_schema=False)
+async def serve_ui():
+    return HTMLResponse(content=_html(), status_code=200)
 
 
-@app.get("/", include_in_schema=False)
-async def serve_root():
-    return HTMLResponse(content=_read_html(), status_code=200)
-
-
-# ── Tasks endpoint ────────────────────────────────────────────────────────────
-@app.get("/tasks", tags=["Environment Info"])
+# ── Tasks ─────────────────────────────────────────────────────────────────────
+@app.get("/tasks", tags=["Environment Info"], summary="List all 7 tasks")
 async def list_tasks():
     return {
         "total": 7,
@@ -96,7 +95,7 @@ async def list_tasks():
                 "scoring_hints": [
                     "Must mention: myocardial infarction OR stemi OR heart attack",
                     "Must mention: aspirin OR pci OR heparin OR reperfusion",
-                    "Bonus: include causal reasoning (e.g. 'ST elevation indicates...')",
+                    "Bonus: include causal reasoning",
                 ],
             },
             {
@@ -140,7 +139,7 @@ async def list_tasks():
                 ),
                 "scoring_hints": [
                     "Root cause: pulmonary embolism OR pe OR thromboembolism",
-                    "Red herring: explicitly call out anxiety/panic as 'red herring' OR 'misleading'",
+                    "Red herring: explicitly call anxiety/panic a red herring OR misleading",
                     "Signal: mention Signal B as definitive",
                 ],
             },
@@ -158,12 +157,11 @@ async def list_tasks():
                     "Root cause (Signal C): Bacterial meningitis — Neisseria meningitidis confirmed by "
                     "gram-negative diplococci on CSF gram stain, CSF WBC 1800, turbid fluid, "
                     "low glucose. Signal B (exam stress, tension headache) is a red herring — "
-                    "coincidental and irrelevant to true diagnosis. Immediate treatment: "
-                    "ceftriaxone IV + dexamethasone stat, isolate patient."
+                    "coincidental and irrelevant. Treatment: ceftriaxone IV + dexamethasone stat."
                 ),
                 "scoring_hints": [
                     "Root cause: meningitis OR bacterial meningitis OR meningococcal",
-                    "Red herring: call out stress/sleep/anxiety as 'red herring' OR 'misleading'",
+                    "Red herring: call stress/anxiety a red herring OR misleading",
                     "Treatment: ceftriaxone OR antibiotics OR dexamethasone",
                 ],
             },
@@ -171,22 +169,21 @@ async def list_tasks():
                 "id": "medium_aortic",
                 "name": "Aortic Dissection vs Acute MI",
                 "difficulty": "medium",
-                "description": "Identify Type A aortic dissection; dismiss troponin/ACS workup as red herring.",
+                "description": "Identify Type A aortic dissection; dismiss ACS workup as red herring.",
                 "time_limit_seconds": 600,
                 "max_steps": 3,
                 "grader": "server.graders.grade_medium",
                 "scenario_id": "medium_aortic",
                 "score_range": {"min": 0.01, "max": 0.80},
                 "example_input": (
-                    "Root cause (Signal C): Type A aortic dissection confirmed by CT aortogram "
-                    "showing intimal flap in ascending aorta, widened mediastinum on CXR. "
-                    "Signal B (troponin elevation, ACS workup) is a red herring — misleading "
-                    "and not the cause. Starting heparin would be dangerous here. "
-                    "Immediate: cardiothoracic surgery for emergency surgical repair."
+                    "Root cause (Signal C): Type A aortic dissection confirmed by CT aortogram — "
+                    "intimal flap in ascending aorta, widened mediastinum on CXR. "
+                    "Signal B (troponin, ACS workup) is a red herring — misleading and not the cause. "
+                    "Heparin is contraindicated here. Immediate: cardiothoracic surgery."
                 ),
                 "scoring_hints": [
                     "Root cause: aortic dissection AND type a",
-                    "Red herring: call out ACS/troponin/heparin as 'red herring' OR 'misleading'",
+                    "Red herring: call ACS/troponin a red herring OR misleading",
                     "Signal C named as definitive",
                 ],
             },
@@ -194,49 +191,47 @@ async def list_tasks():
                 "id": "hard_mass_casualty",
                 "name": "Mass Casualty Triage — Trauma Bay",
                 "difficulty": "hard",
-                "description": "Triage tension pneumothorax, femur fracture, prolonged PEA arrest. Order matters.",
+                "description": "Triage 3 patients: tension pneumothorax, femur fracture, prolonged PEA arrest. Order matters.",
                 "time_limit_seconds": 900,
                 "max_steps": 3,
                 "grader": "server.graders.grade_hard",
                 "scenario_id": "hard_mass_casualty",
                 "score_range": {"min": 0.01, "max": 0.75},
                 "example_input": (
-                    "FIRST: Patient A — tension pneumothorax requires immediate needle decompression "
-                    "at 2nd intercostal space. Airway compromise is immediately fatal if untreated. "
-                    "SECOND: Patient B — femur fracture with active hemorrhage needs blood transfusion "
-                    "and surgical bleeding control. Tourniquet is holding. "
-                    "THIRD: Patient C — cardiac arrest with 14-minute downtime and PEA has poor "
-                    "prognosis. Continue CPR and resuscitation but lowest priority given resources."
+                    "FIRST: Patient A — tension pneumothorax requires immediate needle decompression. "
+                    "Airway compromise is fatal if untreated. "
+                    "SECOND: Patient B — femur fracture with active hemorrhage, blood transfusion "
+                    "and surgical bleeding control. "
+                    "THIRD: Patient C — cardiac arrest 14-minute PEA downtime, poor prognosis, "
+                    "continue CPR lowest priority."
                 ),
                 "scoring_hints": [
-                    "FIRST section must contain: patient a OR tension pneumothorax OR needle decompression",
+                    "FIRST section: patient a OR tension pneumothorax OR needle decompression",
                     "SECOND section: patient b OR femur OR hemorrhage",
-                    "THIRD section: patient c OR cardiac arrest OR pea OR poor prognosis",
-                    "Use explicit FIRST/SECOND/THIRD labels for positional scoring",
+                    "THIRD section: patient c OR cardiac arrest OR pea",
+                    "Use explicit FIRST/SECOND/THIRD labels",
                 ],
             },
             {
                 "id": "hard_sepsis_cascade",
-                "name": "Simultaneous ICU Crisis — Sepsis / Asthma / Hypoglycemia",
+                "name": "ICU Crisis — Sepsis / Asthma / Hypoglycemia",
                 "difficulty": "hard",
-                "description": "Prioritize: reversible hypoglycemia > impending respiratory failure > septic shock.",
+                "description": "Prioritize 3 ICU patients: reversible hypoglycemia > respiratory failure > septic shock.",
                 "time_limit_seconds": 900,
                 "max_steps": 3,
                 "grader": "server.graders.grade_hard",
                 "scenario_id": "hard_sepsis_cascade",
                 "score_range": {"min": 0.01, "max": 0.75},
                 "example_input": (
-                    "FIRST: Patient Z — critical hypoglycemia (glucose 32) with GCS 6 is immediately "
-                    "reversible. Give D50 IV dextrose or glucagon IM now. Brain death risk in minutes. "
-                    "SECOND: Patient Y — silent chest asthma with O2 sat 81% needs immediate intubation "
-                    "and ventilator. RSI with ketamine. Respiratory failure imminent. "
-                    "THIRD: Patient X — septic shock is serious but vasopressors are running. "
-                    "Start broad-spectrum antibiotics after blood cultures. Source control next."
+                    "FIRST: Patient Z — hypoglycemia glucose 32, GCS 6, give D50 IV dextrose immediately. "
+                    "SECOND: Patient Y — silent chest asthma O2 81%, immediate intubation with ketamine RSI. "
+                    "THIRD: Patient X — septic shock, start broad-spectrum antibiotics, "
+                    "vasopressors running, blood cultures."
                 ),
                 "scoring_hints": [
-                    "FIRST section: patient z OR hypoglycemia OR dextrose OR glucagon OR d50",
-                    "SECOND section: patient y OR asthma OR intubation OR silent chest",
-                    "THIRD section: patient x OR sepsis OR antibiotics OR vasopressors",
+                    "FIRST section: patient z OR hypoglycemia OR dextrose OR glucagon",
+                    "SECOND section: patient y OR asthma OR intubation",
+                    "THIRD section: patient x OR sepsis OR antibiotics",
                     "Use explicit FIRST/SECOND/THIRD labels",
                 ],
             },

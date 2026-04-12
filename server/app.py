@@ -4,25 +4,24 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 
-"""
-FastAPI application for the Medical Triage Environment.
+import os
+import sys
 
-Endpoints:
-    POST /reset      — Reset the environment (optional ?task_id= query param)
-    POST /step       — Execute an action
-    GET  /state      — Get current environment state
-    GET  /schema     — Get action/observation schemas
-    GET  /tasks      — List all 7 tasks with graders + example inputs
-    WS   /ws         — WebSocket for persistent sessions
-"""
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# ── Resolve index.html path (same directory as this file) ─────────────────────
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_INDEX_HTML = os.path.join(_HERE, "index.html")
+
+# ── Imports ───────────────────────────────────────────────────────────────────
 try:
     from openenv.core.env_server.http_server import create_app
 except Exception as e:
     raise ImportError("openenv is required. Install with: uv sync") from e
 
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from fastapi import Request
+from fastapi.responses import HTMLResponse, FileResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
 try:
     from models import MedicalTriageAction, MedicalTriageObservation
@@ -31,6 +30,8 @@ except ImportError:
     from medical_triage_env_environment.models import MedicalTriageAction, MedicalTriageObservation
     from medical_triage_env_environment.server.medical_triage_env_environment import MedicalTriageEnvironment
 
+
+# ── Create base app from openenv ──────────────────────────────────────────────
 app = create_app(
     MedicalTriageEnvironment,
     MedicalTriageAction,
@@ -40,14 +41,41 @@ app = create_app(
 )
 
 
-@app.get("/tasks", tags=["Environment Info"], summary="List all 7 tasks with graders and example inputs")
+# ── Middleware: intercept GET / and serve index.html ──────────────────────────
+# Runs BEFORE any route matching — guaranteed to serve the UI.
+class ServeUIMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        if request.method == "GET" and request.url.path in ("/", ""):
+            if os.path.exists(_INDEX_HTML):
+                with open(_INDEX_HTML, "r", encoding="utf-8") as f:
+                    html = f.read()
+                return HTMLResponse(content=html, status_code=200)
+            else:
+                return HTMLResponse(
+                    content="<h1>index.html not found</h1><p>Expected at: " + _INDEX_HTML + "</p>",
+                    status_code=500,
+                )
+        return await call_next(request)
+
+
+app.add_middleware(ServeUIMiddleware)
+
+
+# ── Fallback route at /ui in case middleware is somehow skipped ───────────────
+@app.get("/ui", include_in_schema=False)
+async def serve_ui_fallback():
+    if os.path.exists(_INDEX_HTML):
+        return FileResponse(_INDEX_HTML, media_type="text/html")
+    return HTMLResponse("<h1>index.html not found at: " + _INDEX_HTML + "</h1>", status_code=500)
+
+
+# ── Tasks endpoint ────────────────────────────────────────────────────────────
+@app.get("/tasks", tags=["Environment Info"])
 async def list_tasks():
-    """Return all 7 tasks, difficulties, grader info, and example correct responses."""
     return {
         "total": 7,
         "score_range": {"min": 0.01, "max": 0.99},
         "tasks": [
-            # ── Easy (2) ──────────────────────────────────────────────────
             {
                 "id": "easy_mi",
                 "name": "STEMI Diagnosis & Treatment",
@@ -92,7 +120,6 @@ async def list_tasks():
                     "Must mention: potassium replacement",
                 ],
             },
-            # ── Medium (3) ────────────────────────────────────────────────
             {
                 "id": "medium_pe",
                 "name": "Pulmonary Embolism vs Panic Attack",
@@ -162,7 +189,6 @@ async def list_tasks():
                     "Signal C named as definitive",
                 ],
             },
-            # ── Hard (2) ──────────────────────────────────────────────────
             {
                 "id": "hard_mass_casualty",
                 "name": "Mass Casualty Triage — Trauma Bay",
@@ -218,7 +244,6 @@ async def list_tasks():
 
 
 def main(host: str = "0.0.0.0", port: int = 7860):
-    """Entry point for direct execution via uv run or python -m."""
     import uvicorn
     uvicorn.run(app, host=host, port=port)
 

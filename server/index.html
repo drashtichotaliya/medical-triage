@@ -26,21 +26,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
-.header {
-  background: linear-gradient(180deg, #0a1020 0%, var(--bg) 100%);
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 58px; position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px);
-}
+.header { background: linear-gradient(180deg,#0a1020 0%,var(--bg) 100%); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 58px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
 .logo-row { display: flex; align-items: center; gap: 12px; }
-.logo-box {
-  width: 36px; height: 36px; border-radius: 8px;
-  background: linear-gradient(135deg, #1d4ed8, #7c3aed);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono); font-weight: 700; font-size: 0.8rem; color: #fff;
-}
+.logo-box { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg,#1d4ed8,#7c3aed); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; font-size: 0.8rem; color: #fff; }
 .logo-title { font-weight: 700; font-size: 1rem; color: var(--text); }
 .logo-sub { font-size: 0.68rem; color: var(--muted); margin-top: 1px; font-family: var(--mono); }
 .header-badges { display: flex; gap: 8px; align-items: center; }
@@ -48,11 +36,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .badge-green { background: #052917; color: #22d472; border: 1px solid #0a4a25; }
 .badge-blue  { background: #0c1f3a; color: #60a5fa; border: 1px solid #1a3a6a; }
 .layout { display: flex; min-height: calc(100vh - 58px); }
-.sidebar {
-  width: 240px; min-width: 240px; background: var(--surface);
-  border-right: 1px solid var(--border); padding: 18px 12px;
-  display: flex; flex-direction: column; gap: 4px;
-}
+.sidebar { width: 240px; min-width: 240px; background: var(--surface); border-right: 1px solid var(--border); padding: 18px 12px; display: flex; flex-direction: column; gap: 4px; }
 .sb-section { font-size: 0.6rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; padding: 12px 8px 5px; }
 .sb-item { padding: 8px 12px; border-radius: 7px; cursor: pointer; font-size: 0.8rem; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 8px; transition: all 0.15s; border: 1px solid transparent; }
 .sb-item:hover { background: var(--surface2); color: var(--text); }
@@ -74,10 +58,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .score-value.mid  { color: var(--orange); }
 .score-value.low  { color: var(--red); }
 .score-track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.score-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(.4,0,.2,1), background 0.4s; background: var(--accent); }
+.score-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(.4,0,.2,1),background 0.4s; background: var(--accent); }
 .score-range-labels { display: flex; justify-content: space-between; margin-top: 4px; }
 .score-range-labels span { font-size: 0.62rem; color: var(--muted); font-family: var(--mono); }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 13px 15px; }
 .stat-card.accent-top { border-top: 2px solid var(--accent); }
 .stat-card.green-top  { border-top: 2px solid var(--green); }
@@ -92,7 +76,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .card-title { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .card-sub { font-size: 0.76rem; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.btn { padding: 9px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.84rem; font-weight: 700; font-family: var(--sans); transition: opacity 0.15s, transform 0.1s; }
+.btn { padding: 9px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.84rem; font-weight: 700; font-family: var(--sans); transition: opacity 0.15s,transform 0.1s; }
 .btn:hover { opacity: 0.85; transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 .btn-green  { background: #16a34a; color: #fff; }
@@ -101,16 +85,15 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .btn-ghost  { background: transparent; color: var(--accent2); border: 1px solid var(--border2); }
 .btn-sm { padding: 6px 14px; font-size: 0.76rem; }
 .form-label { font-size: 0.65rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); display: block; margin-bottom: 5px; }
-select, textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 0.84rem; width: 100%; font-family: var(--sans); outline: none; transition: border-color 0.15s; }
-select:focus, textarea:focus { border-color: var(--accent); }
-textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
+textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 0.84rem; width: 100%; font-family: var(--sans); outline: none; transition: border-color 0.15s; min-height: 90px; resize: vertical; line-height: 1.6; }
+textarea:focus { border-color: var(--accent); }
 .resp-box { background: #03060d; border: 1px solid var(--border); border-radius: 10px; padding: 15px; font-family: var(--mono); font-size: 0.73rem; color: #4ade80; white-space: pre-wrap; word-break: break-all; min-height: 90px; max-height: 400px; overflow-y: auto; line-height: 1.7; margin-top: 10px; }
 .alert { padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 12px; line-height: 1.5; }
 .alert-ok   { background: #052917; color: #86efac; border: 1px solid #0a4a25; }
 .alert-info { background: #0c1f3a; color: #93c5fd; border: 1px solid #1a3a6a; }
 .alert-warn { background: #3a1500; color: #fdba74; border: 1px solid #7c2d12; }
 .alert-err  { background: #2d0707; color: #fca5a5; border: 1px solid #7f1d1d; }
-.tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.tasks-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(320px,1fr)); gap: 14px; }
 .task-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: border-color 0.2s; }
 .task-card:hover { border-color: var(--accent); }
 .task-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
@@ -127,7 +110,7 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
 .hints-list li { font-size: 0.7rem; color: var(--muted); padding: 2px 0; padding-left: 14px; position: relative; line-height: 1.5; }
 .hints-list li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
 .use-task-btn { width: 100%; margin-top: 10px; }
-.current-task-indicator { background: linear-gradient(90deg, #0a1828, var(--surface)); border: 1px solid var(--border2); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; display: none; }
+.current-task-indicator { background: linear-gradient(90deg,#0a1828,var(--surface)); border: 1px solid var(--border2); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; display: none; }
 .cti-label { font-size: 0.62rem; font-weight: 700; color: var(--muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
 .cti-name { font-size: 0.88rem; font-weight: 700; color: var(--accent2); }
 .cti-diff { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
@@ -155,15 +138,9 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
 <div class="layout">
   <div class="sidebar">
     <div class="sb-section">Navigate</div>
-    <div class="sb-item active" id="nav-demo" onclick="gotoPage('demo')">
-      <div class="sb-dot" style="background:#3b8bff"></div> Interactive Demo
-    </div>
-    <div class="sb-item" id="nav-tasks" onclick="gotoPage('tasks')">
-      <div class="sb-dot" style="background:#a78bfa"></div> All 7 Tasks
-    </div>
-    <div class="sb-item" id="nav-state" onclick="gotoPage('state')">
-      <div class="sb-dot" style="background:#22d472"></div> State Inspector
-    </div>
+    <div class="sb-item active" id="nav-demo" onclick="gotoPage('demo')"><div class="sb-dot" style="background:#3b8bff"></div> Interactive Demo</div>
+    <div class="sb-item" id="nav-tasks" onclick="gotoPage('tasks')"><div class="sb-dot" style="background:#a78bfa"></div> All 7 Tasks</div>
+    <div class="sb-item" id="nav-state" onclick="gotoPage('state')"><div class="sb-dot" style="background:#22d472"></div> State Inspector</div>
     <div class="sb-div"></div>
     <div class="sb-section">Quick Load Task</div>
     <div class="task-pill" id="pill-easy_mi" onclick="loadTask('easy_mi')"><b>easy_mi</b>STEMI Diagnosis</div>
@@ -176,7 +153,6 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
   </div>
 
   <div class="main">
-
     <!-- DEMO PAGE -->
     <div class="page active" id="page-demo">
       <div class="current-task-indicator" id="cti">
@@ -202,14 +178,14 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
         <div class="card-title">Environment Controls</div>
         <div class="card-sub">Click Reset to load a case. Type your clinical analysis and click Step to score it.</div>
         <div class="btn-row">
-          <button class="btn btn-green"  onclick="doReset()">↺ Reset</button>
-          <button class="btn btn-blue"   onclick="doStep()">▶ Step</button>
+          <button class="btn btn-green" onclick="doReset()">↺ Reset</button>
+          <button class="btn btn-blue"  onclick="doStep()">▶ Step</button>
           <button class="btn btn-purple" onclick="doState()">◎ Get State</button>
         </div>
       </div>
       <div class="card" id="case-card" style="display:none">
         <div class="card-title" style="margin-bottom:10px">📋 Case Report</div>
-        <div class="resp-box" id="case-box" style="color:#93c5fd; max-height:260px"></div>
+        <div class="resp-box" id="case-box" style="color:#93c5fd;max-height:260px"></div>
       </div>
       <div class="card">
         <div class="card-title" style="margin-bottom:12px">Your Clinical Response</div>
@@ -245,41 +221,86 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
       </div>
       <div class="resp-box" id="state-box" style="max-height:600px">Click Refresh...</div>
     </div>
-
   </div>
 </div>
 
 <script>
-// ── Detect base API URL ───────────────────────────────────────────────────────
-// On HuggingFace Spaces the page is served at /web/ but the API lives at the root.
-// We detect this by checking window.location and building the correct API base.
-var API_BASE = (function() {
-  var loc = window.location;
-  // If we're served from /web/ or /web, strip that prefix so API calls go to root
-  var origin = loc.protocol + "//" + loc.host;
-  return origin;
-})();
+// ── HARDCODED TASK DATA ───────────────────────────────────────────────────────
+// Tasks are embedded directly in the HTML so they NEVER depend on a fetch call.
+// This is the nuclear fix — no network request needed for the tasks page.
+var TASKS = [
+  {
+    id: "easy_mi", name: "STEMI Diagnosis & Treatment", difficulty: "easy",
+    description: "Identify inferior STEMI and provide immediate reperfusion treatment plan.",
+    score_range: {min: 0.01, max: 0.95},
+    example_input: "Diagnosis: Inferior STEMI (myocardial infarction). ECG shows ST elevation in II, III, aVF with critically elevated Troponin I confirming acute MI. Immediate treatment: Aspirin 325mg stat, heparin IV anticoagulation, activate cath lab for primary PCI within 90 minutes, oxygen, nitrates.",
+    scoring_hints: ["Must mention: myocardial infarction OR stemi OR heart attack", "Must mention: aspirin OR pci OR heparin OR reperfusion", "Bonus: include causal reasoning"]
+  },
+  {
+    id: "easy_dka", name: "Diabetic Ketoacidosis Management", difficulty: "easy",
+    description: "Identify DKA and manage a Type 1 diabetic in severe metabolic acidosis.",
+    score_range: {min: 0.01, max: 0.95},
+    example_input: "Diagnosis: Diabetic ketoacidosis (DKA). Glucose 512, pH 7.14, anion gap 30, large ketones confirm DKA. Treatment: IV normal saline 1L bolus for hydration, insulin drip 0.1 units/kg/hr, potassium replacement, continuous glucose and electrolyte monitoring, bicarbonate if pH below 6.9.",
+    scoring_hints: ["Must mention: diabetic ketoacidosis OR dka", "Must mention: insulin AND iv fluids/normal saline", "Must mention: potassium replacement"]
+  },
+  {
+    id: "medium_pe", name: "Pulmonary Embolism vs Panic Attack", difficulty: "medium",
+    description: "Identify PE as root cause; dismiss anxiety/panic as red herring.",
+    score_range: {min: 0.01, max: 0.80},
+    example_input: "Root cause (Signal B): Pulmonary embolism confirmed by CT pulmonary angiography showing filling defect in right main pulmonary artery. D-dimer critically elevated at 3200. DVT risk from post-surgical immobilization. Signal C (anxiety/panic) is a red herring — misleading and not the cause. Treatment: heparin anticoagulation immediately, consider thrombolysis.",
+    scoring_hints: ["Root cause: pulmonary embolism OR pe OR thromboembolism", "Red herring: explicitly call out anxiety/panic as red herring", "Signal: mention Signal B as definitive"]
+  },
+  {
+    id: "medium_meningitis", name: "Bacterial Meningitis vs Stress Headache", difficulty: "medium",
+    description: "Diagnose bacterial meningitis from CSF; dismiss exam stress as red herring.",
+    score_range: {min: 0.01, max: 0.80},
+    example_input: "Root cause (Signal C): Bacterial meningitis — Neisseria meningitidis confirmed by gram-negative diplococci on CSF gram stain, CSF WBC 1800, turbid fluid, low glucose. Signal B (exam stress, tension headache) is a red herring — coincidental and irrelevant. Immediate treatment: ceftriaxone IV + dexamethasone stat, isolate patient.",
+    scoring_hints: ["Root cause: meningitis OR bacterial meningitis OR meningococcal", "Red herring: call out stress/sleep/anxiety as red herring", "Treatment: ceftriaxone OR antibiotics OR dexamethasone"]
+  },
+  {
+    id: "medium_aortic", name: "Aortic Dissection vs Acute MI", difficulty: "medium",
+    description: "Identify Type A aortic dissection; dismiss troponin/ACS workup as red herring.",
+    score_range: {min: 0.01, max: 0.80},
+    example_input: "Root cause (Signal C): Type A aortic dissection confirmed by CT aortogram showing intimal flap in ascending aorta, widened mediastinum on CXR. Signal B (troponin elevation, ACS workup) is a red herring — misleading and not the cause. Starting heparin would be dangerous here. Immediate: cardiothoracic surgery for emergency surgical repair.",
+    scoring_hints: ["Root cause: aortic dissection AND type a", "Red herring: call out ACS/troponin/heparin as red herring", "Signal C named as definitive"]
+  },
+  {
+    id: "hard_mass_casualty", name: "Mass Casualty Triage — Trauma Bay", difficulty: "hard",
+    description: "Triage tension pneumothorax, femur fracture, prolonged PEA arrest. Order matters.",
+    score_range: {min: 0.01, max: 0.75},
+    example_input: "FIRST: Patient A — tension pneumothorax requires immediate needle decompression at 2nd intercostal space. Airway compromise is immediately fatal if untreated. SECOND: Patient B — femur fracture with active hemorrhage needs blood transfusion and surgical bleeding control. Tourniquet is holding. THIRD: Patient C — cardiac arrest with 14-minute downtime and PEA has poor prognosis. Continue CPR but lowest priority given resources.",
+    scoring_hints: ["FIRST: patient a OR tension pneumothorax OR needle decompression", "SECOND: patient b OR femur OR hemorrhage", "THIRD: patient c OR cardiac arrest OR pea OR poor prognosis"]
+  },
+  {
+    id: "hard_sepsis_cascade", name: "Simultaneous ICU Crisis — Sepsis / Asthma / Hypoglycemia", difficulty: "hard",
+    description: "Prioritize: reversible hypoglycemia > impending respiratory failure > septic shock.",
+    score_range: {min: 0.01, max: 0.75},
+    example_input: "FIRST: Patient Z — critical hypoglycemia (glucose 32) with GCS 6 is immediately reversible. Give D50 IV dextrose or glucagon IM now. Brain death risk in minutes. SECOND: Patient Y — silent chest asthma with O2 sat 81% needs immediate intubation and ventilator. RSI with ketamine. Respiratory failure imminent. THIRD: Patient X — septic shock is serious but vasopressors are running. Start broad-spectrum antibiotics after blood cultures.",
+    scoring_hints: ["FIRST: patient z OR hypoglycemia OR dextrose OR glucagon OR d50", "SECOND: patient y OR asthma OR intubation OR silent chest", "THIRD: patient x OR sepsis OR antibiotics OR vasopressors"]
+  }
+];
 
-function apiURL(path) {
-  return API_BASE + path;
-}
+// ── API base URL — always the origin, never /web/ prefixed ───────────────────
+var API = window.location.protocol + "//" + window.location.host;
+
+function apiURL(path) { return API + path; }
 
 var started = false;
-var allTasks = [];
+var allTasks = TASKS;   // use embedded tasks immediately, no fetch needed
 var currentTaskId = "";
 var currentExample = "";
 
 function gotoPage(name) {
   ["demo","tasks","state"].forEach(function(p) {
-    document.getElementById("page-" + p).className = "page" + (p === name ? " active" : "");
-    document.getElementById("nav-"  + p).className = "sb-item" + (p === name ? " active" : "");
+    document.getElementById("page-"+p).className = "page"+(p===name?" active":"");
+    document.getElementById("nav-"+p).className  = "sb-item"+(p===name?" active":"");
   });
-  if (name === "tasks" && allTasks.length === 0) loadTasks();
+  if (name === "tasks") renderTasks(allTasks);
 }
 
 function setAlert(msg, type) {
   var b = document.getElementById("alert-box");
-  b.innerHTML = msg ? '<div class="alert alert-' + type + '">' + msg + '</div>' : "";
+  b.innerHTML = msg ? '<div class="alert alert-'+type+'">'+msg+'</div>' : "";
 }
 
 function showScore(score) {
@@ -287,154 +308,133 @@ function showScore(score) {
   var disp = document.getElementById("score-display");
   var fill = document.getElementById("score-fill");
   wrap.style.display = "block";
-  var pct = Math.round(score * 100);
-  disp.textContent = score.toFixed(2) + " (" + pct + "%)";
-  fill.style.width = pct + "%";
+  var pct = Math.round(score*100);
+  disp.textContent = score.toFixed(2)+" ("+pct+"%)";
+  fill.style.width = pct+"%";
   disp.className = "score-value";
   fill.style.background = "#3b8bff";
-  if (score >= 0.70) { disp.classList.add("high"); fill.style.background = "#22d472"; }
-  else if (score >= 0.40) { disp.classList.add("mid"); fill.style.background = "#f97316"; }
-  else { disp.classList.add("low"); fill.style.background = "#ef4444"; }
+  if (score>=0.70){disp.classList.add("high");fill.style.background="#22d472";}
+  else if(score>=0.40){disp.classList.add("mid");fill.style.background="#f97316";}
+  else{disp.classList.add("low");fill.style.background="#ef4444";}
 }
 
 function showStats(meta) {
   document.getElementById("stats-grid").style.display = "grid";
-  document.getElementById("sv-id").textContent     = meta.scenario_id || "—";
-  document.getElementById("sv-step").textContent   = meta.step || "0";
-  document.getElementById("sv-cumrew").textContent = (meta.cumulative_reward || 0).toFixed(3);
-  document.getElementById("sv-diff").textContent   = (meta.difficulty || "—").toUpperCase();
+  document.getElementById("sv-id").textContent    = meta.scenario_id||"—";
+  document.getElementById("sv-step").textContent  = meta.step||"0";
+  document.getElementById("sv-cumrew").textContent= (meta.cumulative_reward||0).toFixed(3);
+  document.getElementById("sv-diff").textContent  = (meta.difficulty||"—").toUpperCase();
 }
 
 function showCTI(taskId) {
   document.getElementById("cti").style.display = "block";
-  var task = allTasks.find(function(t){ return t.id === taskId; });
+  var task = allTasks.find(function(t){return t.id===taskId;});
   if (task) {
     document.getElementById("cti-name").textContent = task.name;
-    document.getElementById("cti-diff").textContent =
-      task.difficulty.toUpperCase() + " · Score range: " + task.score_range.min + " – " + task.score_range.max;
-    currentExample = task.example_input || "";
+    document.getElementById("cti-diff").textContent = task.difficulty.toUpperCase()+" · Score range: "+task.score_range.min+" – "+task.score_range.max;
+    currentExample = task.example_input||"";
   } else {
     document.getElementById("cti-name").textContent = taskId;
     document.getElementById("cti-diff").textContent = "";
   }
-  document.querySelectorAll(".task-pill").forEach(function(p){ p.className="task-pill"; });
-  var pill = document.getElementById("pill-" + taskId);
+  document.querySelectorAll(".task-pill").forEach(function(p){p.className="task-pill";});
+  var pill = document.getElementById("pill-"+taskId);
   if (pill) pill.className = "task-pill active-task";
 }
 
 function doReset(taskId) {
   var url = apiURL("/reset");
-  if (taskId) { currentTaskId = taskId; url = apiURL("/reset?task_id=" + taskId); }
-  setAlert("", "");
-  fetch(url, { method: "POST" })
-    .then(function(r){ return r.json(); })
-    .then(function(obs) {
+  if (taskId){currentTaskId=taskId; url=apiURL("/reset?task_id="+taskId);}
+  setAlert("","");
+  fetch(url,{method:"POST"})
+    .then(function(r){return r.json();})
+    .then(function(obs){
       started = true;
-      var tid = obs.task_id || (obs.metadata && obs.metadata.scenario_id) || "";
+      var tid = obs.task_id||(obs.metadata&&obs.metadata.scenario_id)||"";
       currentTaskId = tid;
       showCTI(tid);
-      if (obs.metadata) showStats(obs.metadata);
+      if(obs.metadata) showStats(obs.metadata);
       document.getElementById("case-card").style.display = "block";
-      document.getElementById("case-box").textContent = obs.case_report || "";
-      document.getElementById("resp-box").textContent = JSON.stringify(obs, null, 2);
+      document.getElementById("case-box").textContent = obs.case_report||"";
+      document.getElementById("resp-box").textContent = JSON.stringify(obs,null,2);
       document.getElementById("score-bar-wrap").style.display = "none";
-      setAlert("Case loaded: " + (tid || "unknown") + " — write your clinical analysis below and click Step.", "info");
+      setAlert("Case loaded: "+(tid||"unknown")+" — write your clinical analysis below and click Step.","info");
     })
-    .catch(function(e){ setAlert("Reset failed: " + e, "err"); });
+    .catch(function(e){setAlert("Reset failed: "+e,"err");});
 }
 
 function doStep() {
-  if (!started) { setAlert("Click Reset first.", "info"); return; }
+  if(!started){setAlert("Click Reset first.","info");return;}
   var val = document.getElementById("resp-input").value.trim();
-  if (!val) { setAlert("Enter your clinical analysis before clicking Step.", "warn"); return; }
-  setAlert("", "");
-  fetch(apiURL("/step"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ response: val })
+  if(!val){setAlert("Enter your clinical analysis before clicking Step.","warn");return;}
+  setAlert("","");
+  fetch(apiURL("/step"),{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({response:val})
   })
-    .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
-    .then(function(res) {
-      if (!res.ok) { setAlert("Error: " + JSON.stringify(res.data), "err"); return; }
-      var d = res.data;
-      var reward = typeof d.reward === "number" ? d.reward : 0;
-      var meta   = d.metadata || (d.observation && d.observation.metadata) || {};
-      var pct    = Math.round(reward * 100);
+    .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d};});})
+    .then(function(res){
+      if(!res.ok){setAlert("Error: "+JSON.stringify(res.data),"err");return;}
+      var d=res.data;
+      var reward=typeof d.reward==="number"?d.reward:0;
+      var meta=d.metadata||(d.observation&&d.observation.metadata)||{};
+      var pct=Math.round(reward*100);
       showScore(reward);
-      showStats(Object.assign({ step: meta.step || 1 }, meta));
-      document.getElementById("resp-box").textContent = JSON.stringify(d, null, 2);
-      var fb = (d.observation && d.observation.feedback) || d.feedback || "";
-      if (reward >= 0.70) setAlert("✅ " + fb + " | Score: " + reward.toFixed(2) + " (" + pct + "%)", "ok");
-      else if (reward >= 0.40) setAlert("⚠️ " + fb + " | Score: " + reward.toFixed(2) + " (" + pct + "%) — try improving your answer.", "warn");
-      else setAlert("❌ " + fb + " | Score: " + reward.toFixed(2) + " (" + pct + "%) — key clinical details missing.", "err");
-      if (d.done) started = false;
+      showStats(Object.assign({step:meta.step||1},meta));
+      document.getElementById("resp-box").textContent=JSON.stringify(d,null,2);
+      var fb=(d.observation&&d.observation.feedback)||d.feedback||"";
+      if(reward>=0.70) setAlert("✅ "+fb+" | Score: "+reward.toFixed(2)+" ("+pct+"%)","ok");
+      else if(reward>=0.40) setAlert("⚠️ "+fb+" | Score: "+reward.toFixed(2)+" ("+pct+"%) — try improving.","warn");
+      else setAlert("❌ "+fb+" | Score: "+reward.toFixed(2)+" ("+pct+"%) — key details missing.","err");
+      if(d.done) started=false;
     })
-    .catch(function(e){ setAlert("Step failed: " + e, "err"); });
+    .catch(function(e){setAlert("Step failed: "+e,"err");});
 }
 
 function doState() {
   fetch(apiURL("/state"))
-    .then(function(r){ return r.json(); })
+    .then(function(r){return r.json();})
     .then(function(s){
-      document.getElementById("state-box").textContent = JSON.stringify(s, null, 2);
-      document.getElementById("resp-box").textContent  = JSON.stringify(s, null, 2);
+      document.getElementById("state-box").textContent=JSON.stringify(s,null,2);
+      document.getElementById("resp-box").textContent=JSON.stringify(s,null,2);
     })
-    .catch(function(e){ document.getElementById("state-box").textContent = "Error: " + e; });
+    .catch(function(e){document.getElementById("state-box").textContent="Error: "+e;});
 }
 
 function fillExample() {
-  if (!currentExample) { setAlert("Reset a task first to load its example answer.", "info"); return; }
-  document.getElementById("resp-input").value = currentExample;
-  setAlert("Example answer loaded. Click Step to see the score.", "info");
+  if(!currentExample){setAlert("Reset a task first to load its example answer.","info");return;}
+  document.getElementById("resp-input").value=currentExample;
+  setAlert("Example answer loaded. Click Step to see the score.","info");
 }
-function clearInput() { document.getElementById("resp-input").value = ""; }
+function clearInput(){document.getElementById("resp-input").value="";}
 
-function loadTask(taskId) {
-  gotoPage("demo");
-  doReset(taskId);
-}
-
-function loadTasks() {
-  fetch(apiURL("/tasks"))
-    .then(function(r){ return r.json(); })
-    .then(function(data) {
-      allTasks = data.tasks || [];
-      renderTasks(allTasks);
-    })
-    .catch(function(e){
-      document.getElementById("tasks-grid").innerHTML =
-        '<div class="alert alert-err">Failed to load tasks: ' + e + '</div>';
-    });
-}
+function loadTask(taskId){gotoPage("demo");doReset(taskId);}
 
 function renderTasks(tasks) {
   var grid = document.getElementById("tasks-grid");
-  if (!tasks || !tasks.length) { grid.innerHTML = '<div style="color:var(--muted)">No tasks found.</div>'; return; }
-  var html = "";
-  tasks.forEach(function(t) {
-    var dc = t.difficulty === "easy" ? "diff-easy" : t.difficulty === "hard" ? "diff-hard" : "diff-medium";
-    var hints = (t.scoring_hints || []).map(function(h){ return '<li>' + h + '</li>'; }).join("");
-    html += '<div class="task-card">' +
-      '<div class="task-card-header"><div class="task-card-name">' + t.name + '</div>' +
-      '<span class="diff-badge ' + dc + '">' + t.difficulty.toUpperCase() + '</span></div>' +
-      '<div class="task-desc">' + t.description + '</div>' +
-      '<div class="task-score-range">📊 Score range: <b>' + t.score_range.min + '</b> – <b>' + t.score_range.max + '</b>&nbsp;·&nbsp;ID: <b>' + t.id + '</b></div>' +
-      '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Example Input</div>' +
-      '<div class="example-box">' + t.example_input + '</div>' +
-      '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Grader Hints</div>' +
-      '<ul class="hints-list">' + hints + '</ul>' +
-      '<button class="btn btn-blue btn-sm use-task-btn" onclick="loadTask(\'' + t.id + '\')">▶ Use This Task</button>' +
+  if(!tasks||!tasks.length){grid.innerHTML='<div style="color:var(--muted)">No tasks found.</div>';return;}
+  var html="";
+  tasks.forEach(function(t){
+    var dc=t.difficulty==="easy"?"diff-easy":t.difficulty==="hard"?"diff-hard":"diff-medium";
+    var hints=(t.scoring_hints||[]).map(function(h){return'<li>'+h+'</li>';}).join("");
+    html+='<div class="task-card">'+
+      '<div class="task-card-header"><div class="task-card-name">'+t.name+'</div>'+
+      '<span class="diff-badge '+dc+'">'+t.difficulty.toUpperCase()+'</span></div>'+
+      '<div class="task-desc">'+t.description+'</div>'+
+      '<div class="task-score-range">📊 Score range: <b>'+t.score_range.min+'</b> – <b>'+t.score_range.max+'</b>&nbsp;·&nbsp;ID: <b>'+t.id+'</b></div>'+
+      '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Example Input</div>'+
+      '<div class="example-box">'+t.example_input+'</div>'+
+      '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Grader Hints</div>'+
+      '<ul class="hints-list">'+hints+'</ul>'+
+      '<button class="btn btn-blue btn-sm use-task-btn" onclick="loadTask(\''+t.id+'\')">▶ Use This Task</button>'+
     '</div>';
   });
-  grid.innerHTML = html;
+  grid.innerHTML=html;
 }
 
-window.onload = function() {
-  fetch(apiURL("/tasks"))
-    .then(function(r){ return r.json(); })
-    .then(function(data){ allTasks = data.tasks || []; })
-    .catch(function(){});
-};
+// Render tasks immediately on load — no fetch required
+window.onload = function(){ renderTasks(allTasks); };
 </script>
 </body>
 </html>

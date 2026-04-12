@@ -36,3 +36,6 @@ Thumbs.db
 # Inference output
 inference*.txt
 uvicorn*.log
+__pycache__/
+.pytest_cache/
+*.pyc

@@ -1,0 +1,27 @@
+spec_version: 1
+name: medical_triage_env
+version: 1.0.0
+description: >
+  A zero-LLM deterministic OpenEnv reinforcement learning environment evaluating
+  the emergency medicine triage capabilities of AI agents. Agents analyze patient
+  case reports, identify diagnoses, dismiss red herrings, and prioritize treatment.
+type: space
+runtime: fastapi
+app: server.app:app
+port: 7860
+tags:
+  - openenv
+  - medical-triage
+  - emergency-medicine
+  - healthcare
+  - triage
+tasks:
+  - id: easy
+    description: "Single patient diagnosis from clear clinical presentation."
+    grader: server.graders.grade_easy
+  - id: medium
+    description: "Multi-signal diagnosis requiring red herring identification."
+    grader: server.graders.grade_medium
+  - id: hard
+    description: "Multi-patient triage requiring prioritized action plan."
+    grader: server.graders.grade_hard

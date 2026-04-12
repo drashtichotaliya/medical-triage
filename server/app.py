@@ -9,11 +9,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# ── Resolve index.html path (same directory as this file) ─────────────────────
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _INDEX_HTML = os.path.join(_HERE, "index.html")
 
-# ── Imports ───────────────────────────────────────────────────────────────────
 try:
     from openenv.core.env_server.http_server import create_app
 except Exception as e:
@@ -31,7 +29,6 @@ except ImportError:
     from medical_triage_env_environment.server.medical_triage_env_environment import MedicalTriageEnvironment
 
 
-# ── Create base app from openenv ──────────────────────────────────────────────
 app = create_app(
     MedicalTriageEnvironment,
     MedicalTriageAction,
@@ -41,32 +38,36 @@ app = create_app(
 )
 
 
-# ── Middleware: intercept GET / and serve index.html ──────────────────────────
-# Runs BEFORE any route matching — guaranteed to serve the UI.
+def _read_html():
+    if os.path.exists(_INDEX_HTML):
+        with open(_INDEX_HTML, "r", encoding="utf-8") as f:
+            return f.read()
+    return "<h1>index.html not found at: " + _INDEX_HTML + "</h1>"
+
+
+# ── Middleware: serve index.html at / AND /web AND /web/ ─────────────────────
+# HuggingFace Spaces routes the browser to /web/ — we must handle that path.
 class ServeUIMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.method == "GET" and request.url.path in ("/", ""):
-            if os.path.exists(_INDEX_HTML):
-                with open(_INDEX_HTML, "r", encoding="utf-8") as f:
-                    html = f.read()
-                return HTMLResponse(content=html, status_code=200)
-            else:
-                return HTMLResponse(
-                    content="<h1>index.html not found</h1><p>Expected at: " + _INDEX_HTML + "</p>",
-                    status_code=500,
-                )
+        path = request.url.path
+        if request.method == "GET" and path in ("/", "", "/web", "/web/"):
+            return HTMLResponse(content=_read_html(), status_code=200)
         return await call_next(request)
 
 
 app.add_middleware(ServeUIMiddleware)
 
 
-# ── Fallback route at /ui in case middleware is somehow skipped ───────────────
-@app.get("/ui", include_in_schema=False)
-async def serve_ui_fallback():
-    if os.path.exists(_INDEX_HTML):
-        return FileResponse(_INDEX_HTML, media_type="text/html")
-    return HTMLResponse("<h1>index.html not found at: " + _INDEX_HTML + "</h1>", status_code=500)
+# ── Explicit routes as belt-and-suspenders ────────────────────────────────────
+@app.get("/web", include_in_schema=False)
+@app.get("/web/", include_in_schema=False)
+async def serve_web():
+    return HTMLResponse(content=_read_html(), status_code=200)
+
+
+@app.get("/", include_in_schema=False)
+async def serve_root():
+    return HTMLResponse(content=_read_html(), status_code=200)
 
 
 # ── Tasks endpoint ────────────────────────────────────────────────────────────

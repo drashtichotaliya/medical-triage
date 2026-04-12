@@ -26,8 +26,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
-
-/* ── HEADER ── */
 .header {
   background: linear-gradient(180deg, #0a1020 0%, var(--bg) 100%);
   border-bottom: 1px solid var(--border);
@@ -46,51 +44,28 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .logo-title { font-weight: 700; font-size: 1rem; color: var(--text); }
 .logo-sub { font-size: 0.68rem; color: var(--muted); margin-top: 1px; font-family: var(--mono); }
 .header-badges { display: flex; gap: 8px; align-items: center; }
-.badge {
-  padding: 3px 10px; border-radius: 20px; font-size: 0.65rem;
-  font-weight: 700; font-family: var(--mono); letter-spacing: 0.05em;
-}
+.badge { padding: 3px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; font-family: var(--mono); letter-spacing: 0.05em; }
 .badge-green { background: #052917; color: #22d472; border: 1px solid #0a4a25; }
 .badge-blue  { background: #0c1f3a; color: #60a5fa; border: 1px solid #1a3a6a; }
-
-/* ── LAYOUT ── */
 .layout { display: flex; min-height: calc(100vh - 58px); }
-
-/* ── SIDEBAR ── */
 .sidebar {
   width: 240px; min-width: 240px; background: var(--surface);
   border-right: 1px solid var(--border); padding: 18px 12px;
   display: flex; flex-direction: column; gap: 4px;
 }
-.sb-section { font-size: 0.6rem; font-weight: 700; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.12em; padding: 12px 8px 5px; }
-.sb-item {
-  padding: 8px 12px; border-radius: 7px; cursor: pointer;
-  font-size: 0.8rem; color: var(--muted); font-weight: 500;
-  display: flex; align-items: center; gap: 8px; transition: all 0.15s;
-  border: 1px solid transparent;
-}
+.sb-section { font-size: 0.6rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; padding: 12px 8px 5px; }
+.sb-item { padding: 8px 12px; border-radius: 7px; cursor: pointer; font-size: 0.8rem; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 8px; transition: all 0.15s; border: 1px solid transparent; }
 .sb-item:hover { background: var(--surface2); color: var(--text); }
 .sb-item.active { background: #0f1f3a; color: var(--accent2); border-color: #1a3560; }
 .sb-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .sb-div { height: 1px; background: var(--border); margin: 6px 0; }
-
-/* difficulty pills in sidebar */
-.task-pill {
-  padding: 6px 10px; border-radius: 7px; cursor: pointer;
-  font-size: 0.74rem; color: var(--muted); border: 1px solid var(--border);
-  background: var(--bg); margin-bottom: 4px; transition: all 0.15s;
-}
+.task-pill { padding: 6px 10px; border-radius: 7px; cursor: pointer; font-size: 0.74rem; color: var(--muted); border: 1px solid var(--border); background: var(--bg); margin-bottom: 4px; transition: all 0.15s; }
 .task-pill:hover { border-color: var(--accent); color: var(--accent2); }
 .task-pill.active-task { border-color: var(--accent); background: #0a1828; color: var(--accent2); }
 .task-pill b { display: block; font-size: 0.7rem; margin-bottom: 1px; color: var(--text); }
-
-/* ── MAIN ── */
 .main { flex: 1; padding: 24px 28px; overflow-y: auto; }
 .page { display: none; }
 .page.active { display: block; }
-
-/* ── SCORE BAR ── */
 .score-bar-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; margin-bottom: 16px; }
 .score-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .score-label { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); }
@@ -102,8 +77,6 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .score-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(.4,0,.2,1), background 0.4s; background: var(--accent); }
 .score-range-labels { display: flex; justify-content: space-between; margin-top: 4px; }
 .score-range-labels span { font-size: 0.62rem; color: var(--muted); font-family: var(--mono); }
-
-/* ── STATS GRID ── */
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 13px 15px; }
 .stat-card.accent-top { border-top: 2px solid var(--accent); }
@@ -115,19 +88,11 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .stat-card.green-top  .stat-v { color: var(--green); }
 .stat-card.orange-top .stat-v { color: var(--orange); }
 .stat-card.purple-top .stat-v { color: var(--purple); }
-
-/* ── CARDS ── */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
 .card-title { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .card-sub { font-size: 0.76rem; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
-
-/* ── BUTTONS ── */
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.btn {
-  padding: 9px 22px; border-radius: 8px; border: none; cursor: pointer;
-  font-size: 0.84rem; font-weight: 700; font-family: var(--sans);
-  transition: opacity 0.15s, transform 0.1s;
-}
+.btn { padding: 9px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.84rem; font-weight: 700; font-family: var(--sans); transition: opacity 0.15s, transform 0.1s; }
 .btn:hover { opacity: 0.85; transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 .btn-green  { background: #16a34a; color: #fff; }
@@ -135,39 +100,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .btn-purple { background: #7c3aed; color: #fff; }
 .btn-ghost  { background: transparent; color: var(--accent2); border: 1px solid var(--border2); }
 .btn-sm { padding: 6px 14px; font-size: 0.76rem; }
-
-/* ── FORM ── */
 .form-label { font-size: 0.65rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); display: block; margin-bottom: 5px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-select, textarea {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-  padding: 9px 12px; color: var(--text); font-size: 0.84rem; width: 100%;
-  font-family: var(--sans); outline: none; transition: border-color 0.15s;
-}
+select, textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 0.84rem; width: 100%; font-family: var(--sans); outline: none; transition: border-color 0.15s; }
 select:focus, textarea:focus { border-color: var(--accent); }
 textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
-
-/* ── RESPONSE BOX ── */
-.resp-box {
-  background: #03060d; border: 1px solid var(--border); border-radius: 10px;
-  padding: 15px; font-family: var(--mono); font-size: 0.73rem; color: #4ade80;
-  white-space: pre-wrap; word-break: break-all; min-height: 90px;
-  max-height: 400px; overflow-y: auto; line-height: 1.7; margin-top: 10px;
-}
-
-/* ── ALERT ── */
+.resp-box { background: #03060d; border: 1px solid var(--border); border-radius: 10px; padding: 15px; font-family: var(--mono); font-size: 0.73rem; color: #4ade80; white-space: pre-wrap; word-break: break-all; min-height: 90px; max-height: 400px; overflow-y: auto; line-height: 1.7; margin-top: 10px; }
 .alert { padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 12px; line-height: 1.5; }
 .alert-ok   { background: #052917; color: #86efac; border: 1px solid #0a4a25; }
 .alert-info { background: #0c1f3a; color: #93c5fd; border: 1px solid #1a3a6a; }
 .alert-warn { background: #3a1500; color: #fdba74; border: 1px solid #7c2d12; }
 .alert-err  { background: #2d0707; color: #fca5a5; border: 1px solid #7f1d1d; }
-
-/* ── TASK CARDS PAGE ── */
 .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
-.task-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 18px; transition: border-color 0.2s;
-}
+.task-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: border-color 0.2s; }
 .task-card:hover { border-color: var(--accent); }
 .task-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
 .task-card-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
@@ -176,49 +120,17 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
 .diff-medium { background: #3a1500; color: #f97316; border: 1px solid #7c2d12; }
 .diff-hard   { background: #2d0707; color: #ef4444; border: 1px solid #7f1d1d; }
 .task-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
-.task-score-range {
-  display: flex; gap: 8px; align-items: center; margin-bottom: 12px;
-  font-size: 0.7rem; font-family: var(--mono); color: var(--muted);
-}
+.task-score-range { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; font-size: 0.7rem; font-family: var(--mono); color: var(--muted); }
 .task-score-range b { color: var(--text); }
-.example-box {
-  background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent);
-  border-radius: 0 8px 8px 0; padding: 10px 12px; font-size: 0.72rem;
-  color: #7aa8d0; line-height: 1.7; font-family: var(--mono); margin-bottom: 10px;
-  max-height: 140px; overflow-y: auto;
-}
+.example-box { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 12px; font-size: 0.72rem; color: #7aa8d0; line-height: 1.7; font-family: var(--mono); margin-bottom: 10px; max-height: 140px; overflow-y: auto; }
 .hints-list { list-style: none; }
 .hints-list li { font-size: 0.7rem; color: var(--muted); padding: 2px 0; padding-left: 14px; position: relative; line-height: 1.5; }
 .hints-list li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
 .use-task-btn { width: 100%; margin-top: 10px; }
-
-/* ── TASK SCORES PANEL ── */
-.task-scores-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-top: 8px; }
-.ts-item {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-  padding: 10px 12px;
-}
-.ts-name { font-size: 0.65rem; font-weight: 700; color: var(--muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-.ts-score { font-size: 1rem; font-weight: 700; font-family: var(--mono); color: var(--muted); }
-.ts-score.scored { color: var(--accent2); }
-.ts-score.high { color: var(--green); }
-.ts-score.mid  { color: var(--orange); }
-.ts-score.low  { color: var(--red); }
-.ts-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 5px; overflow: hidden; }
-.ts-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s; }
-
-/* ── CURRENT TASK INDICATOR ── */
-.current-task-indicator {
-  background: linear-gradient(90deg, #0a1828, var(--surface));
-  border: 1px solid var(--border2); border-left: 3px solid var(--accent);
-  border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px;
-  display: none;
-}
+.current-task-indicator { background: linear-gradient(90deg, #0a1828, var(--surface)); border: 1px solid var(--border2); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; display: none; }
 .cti-label { font-size: 0.62rem; font-weight: 700; color: var(--muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
 .cti-name { font-size: 0.88rem; font-weight: 700; color: var(--accent2); }
 .cti-diff { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-
-/* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
@@ -235,14 +147,12 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
     </div>
   </div>
   <div class="header-badges">
-    <span class="badge badge-green" id="status-badge">● RUNNING</span>
+    <span class="badge badge-green">● RUNNING</span>
     <span class="badge badge-blue">7 TASKS</span>
   </div>
 </div>
 
 <div class="layout">
-
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-section">Navigate</div>
     <div class="sb-item active" id="nav-demo" onclick="gotoPage('demo')">
@@ -254,46 +164,26 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
     <div class="sb-item" id="nav-state" onclick="gotoPage('state')">
       <div class="sb-dot" style="background:#22d472"></div> State Inspector
     </div>
-
     <div class="sb-div"></div>
     <div class="sb-section">Quick Load Task</div>
-
-    <div class="task-pill" id="pill-easy_mi" onclick="loadTask('easy_mi')">
-      <b>easy_mi</b>STEMI Diagnosis
-    </div>
-    <div class="task-pill" id="pill-easy_dka" onclick="loadTask('easy_dka')">
-      <b>easy_dka</b>DKA Management
-    </div>
-    <div class="task-pill" id="pill-medium_pe" onclick="loadTask('medium_pe')">
-      <b>medium_pe</b>PE vs Panic Attack
-    </div>
-    <div class="task-pill" id="pill-medium_meningitis" onclick="loadTask('medium_meningitis')">
-      <b>medium_meningitis</b>Meningitis vs Stress
-    </div>
-    <div class="task-pill" id="pill-medium_aortic" onclick="loadTask('medium_aortic')">
-      <b>medium_aortic</b>Aortic Dissection
-    </div>
-    <div class="task-pill" id="pill-hard_mass_casualty" onclick="loadTask('hard_mass_casualty')">
-      <b>hard_mass_casualty</b>Mass Casualty
-    </div>
-    <div class="task-pill" id="pill-hard_sepsis_cascade" onclick="loadTask('hard_sepsis_cascade')">
-      <b>hard_sepsis_cascade</b>ICU Cascade
-    </div>
+    <div class="task-pill" id="pill-easy_mi" onclick="loadTask('easy_mi')"><b>easy_mi</b>STEMI Diagnosis</div>
+    <div class="task-pill" id="pill-easy_dka" onclick="loadTask('easy_dka')"><b>easy_dka</b>DKA Management</div>
+    <div class="task-pill" id="pill-medium_pe" onclick="loadTask('medium_pe')"><b>medium_pe</b>PE vs Panic Attack</div>
+    <div class="task-pill" id="pill-medium_meningitis" onclick="loadTask('medium_meningitis')"><b>medium_meningitis</b>Meningitis vs Stress</div>
+    <div class="task-pill" id="pill-medium_aortic" onclick="loadTask('medium_aortic')"><b>medium_aortic</b>Aortic Dissection</div>
+    <div class="task-pill" id="pill-hard_mass_casualty" onclick="loadTask('hard_mass_casualty')"><b>hard_mass_casualty</b>Mass Casualty</div>
+    <div class="task-pill" id="pill-hard_sepsis_cascade" onclick="loadTask('hard_sepsis_cascade')"><b>hard_sepsis_cascade</b>ICU Cascade</div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
 
-    <!-- ── DEMO PAGE ── -->
+    <!-- DEMO PAGE -->
     <div class="page active" id="page-demo">
-
       <div class="current-task-indicator" id="cti">
         <div class="cti-label">Current Task</div>
         <div class="cti-name" id="cti-name">—</div>
         <div class="cti-diff" id="cti-diff">—</div>
       </div>
-
-      <!-- score bar -->
       <div class="score-bar-wrap" id="score-bar-wrap" style="display:none">
         <div class="score-row">
           <span class="score-label">Last Task Score</span>
@@ -302,64 +192,51 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
         <div class="score-track"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
         <div class="score-range-labels"><span>min 0.01</span><span>max 0.99</span></div>
       </div>
-
-      <!-- stats -->
       <div class="stats-grid" id="stats-grid" style="display:none">
         <div class="stat-card accent-top"><div class="stat-l">Scenario</div><div class="stat-v" id="sv-id">—</div></div>
         <div class="stat-card green-top"><div class="stat-l">Step</div><div class="stat-v" id="sv-step">0</div></div>
         <div class="stat-card orange-top"><div class="stat-l">Cumulative Reward</div><div class="stat-v" id="sv-cumrew">0.00</div></div>
         <div class="stat-card purple-top"><div class="stat-l">Difficulty</div><div class="stat-v" id="sv-diff">—</div></div>
       </div>
-
-      <!-- controls -->
       <div class="card">
         <div class="card-title">Environment Controls</div>
-        <div class="card-sub">Click Reset to load a case. Type your clinical analysis and click Step to score it. Use sidebar to jump to a specific task.</div>
+        <div class="card-sub">Click Reset to load a case. Type your clinical analysis and click Step to score it.</div>
         <div class="btn-row">
           <button class="btn btn-green"  onclick="doReset()">↺ Reset</button>
           <button class="btn btn-blue"   onclick="doStep()">▶ Step</button>
           <button class="btn btn-purple" onclick="doState()">◎ Get State</button>
         </div>
       </div>
-
-      <!-- case report -->
       <div class="card" id="case-card" style="display:none">
         <div class="card-title" style="margin-bottom:10px">📋 Case Report</div>
         <div class="resp-box" id="case-box" style="color:#93c5fd; max-height:260px"></div>
       </div>
-
-      <!-- response input -->
       <div class="card">
         <div class="card-title" style="margin-bottom:12px">Your Clinical Response</div>
         <label class="form-label">Analysis &amp; Treatment Plan</label>
-        <textarea id="resp-input" placeholder="Type your clinical analysis here, then click Step to score it...&#10;&#10;Example: 'Diagnosis: STEMI. Treatment: Aspirin 325mg, activate cath lab for PCI...'"></textarea>
+        <textarea id="resp-input" placeholder="Type your clinical analysis here, then click Step to score it..."></textarea>
         <div class="btn-row" style="margin-top:8px">
           <button class="btn btn-ghost btn-sm" onclick="fillExample()">📋 Fill Example Answer</button>
           <button class="btn btn-ghost btn-sm" onclick="clearInput()">✕ Clear</button>
         </div>
       </div>
-
-      <!-- feedback -->
       <div class="card">
         <div class="card-title">Response &amp; Score</div>
         <div id="alert-box"></div>
         <div class="resp-box" id="resp-box">Click Reset to begin...</div>
       </div>
-
     </div>
 
-    <!-- ── TASKS PAGE ── -->
+    <!-- TASKS PAGE -->
     <div class="page" id="page-tasks">
       <div class="card">
         <div class="card-title">All 7 Tasks</div>
-        <div class="card-sub">Each task shows difficulty, score range, an example correct answer, and grader hints. Click "Use This Task" to load it in the demo.</div>
+        <div class="card-sub">Each task shows difficulty, score range, an example correct answer, and grader hints.</div>
       </div>
-      <div class="tasks-grid" id="tasks-grid">
-        <div style="color:var(--muted);font-size:0.8rem">Loading tasks...</div>
-      </div>
+      <div class="tasks-grid" id="tasks-grid"><div style="color:var(--muted);font-size:0.8rem">Loading tasks...</div></div>
     </div>
 
-    <!-- ── STATE PAGE ── -->
+    <!-- STATE PAGE -->
     <div class="page" id="page-state">
       <div class="card">
         <div class="card-title">Environment State</div>
@@ -373,13 +250,25 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
 </div>
 
 <script>
-// ── State ────────────────────────────────────────────────────────────────────
+// ── Detect base API URL ───────────────────────────────────────────────────────
+// On HuggingFace Spaces the page is served at /web/ but the API lives at the root.
+// We detect this by checking window.location and building the correct API base.
+var API_BASE = (function() {
+  var loc = window.location;
+  // If we're served from /web/ or /web, strip that prefix so API calls go to root
+  var origin = loc.protocol + "//" + loc.host;
+  return origin;
+})();
+
+function apiURL(path) {
+  return API_BASE + path;
+}
+
 var started = false;
 var allTasks = [];
 var currentTaskId = "";
 var currentExample = "";
 
-// ── Navigation ───────────────────────────────────────────────────────────────
 function gotoPage(name) {
   ["demo","tasks","state"].forEach(function(p) {
     document.getElementById("page-" + p).className = "page" + (p === name ? " active" : "");
@@ -388,13 +277,11 @@ function gotoPage(name) {
   if (name === "tasks" && allTasks.length === 0) loadTasks();
 }
 
-// ── Alert ─────────────────────────────────────────────────────────────────────
 function setAlert(msg, type) {
   var b = document.getElementById("alert-box");
   b.innerHTML = msg ? '<div class="alert alert-' + type + '">' + msg + '</div>' : "";
 }
 
-// ── Score display ─────────────────────────────────────────────────────────────
 function showScore(score) {
   var wrap = document.getElementById("score-bar-wrap");
   var disp = document.getElementById("score-display");
@@ -410,19 +297,16 @@ function showScore(score) {
   else { disp.classList.add("low"); fill.style.background = "#ef4444"; }
 }
 
-// ── Stats ─────────────────────────────────────────────────────────────────────
 function showStats(meta) {
   document.getElementById("stats-grid").style.display = "grid";
-  document.getElementById("sv-id").textContent    = meta.scenario_id  || "—";
-  document.getElementById("sv-step").textContent  = meta.step         || "0";
+  document.getElementById("sv-id").textContent     = meta.scenario_id || "—";
+  document.getElementById("sv-step").textContent   = meta.step || "0";
   document.getElementById("sv-cumrew").textContent = (meta.cumulative_reward || 0).toFixed(3);
-  document.getElementById("sv-diff").textContent  = (meta.difficulty  || "—").toUpperCase();
+  document.getElementById("sv-diff").textContent   = (meta.difficulty || "—").toUpperCase();
 }
 
-// ── Current task indicator ────────────────────────────────────────────────────
 function showCTI(taskId) {
-  var cti = document.getElementById("cti");
-  cti.style.display = "block";
+  document.getElementById("cti").style.display = "block";
   var task = allTasks.find(function(t){ return t.id === taskId; });
   if (task) {
     document.getElementById("cti-name").textContent = task.name;
@@ -438,10 +322,9 @@ function showCTI(taskId) {
   if (pill) pill.className = "task-pill active-task";
 }
 
-// ── Reset ─────────────────────────────────────────────────────────────────────
 function doReset(taskId) {
-  var url = "/reset";
-  if (taskId) { currentTaskId = taskId; url = "/reset?task_id=" + taskId; }
+  var url = apiURL("/reset");
+  if (taskId) { currentTaskId = taskId; url = apiURL("/reset?task_id=" + taskId); }
   setAlert("", "");
   fetch(url, { method: "POST" })
     .then(function(r){ return r.json(); })
@@ -451,9 +334,8 @@ function doReset(taskId) {
       currentTaskId = tid;
       showCTI(tid);
       if (obs.metadata) showStats(obs.metadata);
-      var cr = obs.case_report || "";
       document.getElementById("case-card").style.display = "block";
-      document.getElementById("case-box").textContent = cr;
+      document.getElementById("case-box").textContent = obs.case_report || "";
       document.getElementById("resp-box").textContent = JSON.stringify(obs, null, 2);
       document.getElementById("score-bar-wrap").style.display = "none";
       setAlert("Case loaded: " + (tid || "unknown") + " — write your clinical analysis below and click Step.", "info");
@@ -461,13 +343,12 @@ function doReset(taskId) {
     .catch(function(e){ setAlert("Reset failed: " + e, "err"); });
 }
 
-// ── Step ──────────────────────────────────────────────────────────────────────
 function doStep() {
   if (!started) { setAlert("Click Reset first.", "info"); return; }
   var val = document.getElementById("resp-input").value.trim();
   if (!val) { setAlert("Enter your clinical analysis before clicking Step.", "warn"); return; }
   setAlert("", "");
-  fetch("/step", {
+  fetch(apiURL("/step"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ response: val })
@@ -479,24 +360,20 @@ function doStep() {
       var reward = typeof d.reward === "number" ? d.reward : 0;
       var meta   = d.metadata || (d.observation && d.observation.metadata) || {};
       var pct    = Math.round(reward * 100);
-
       showScore(reward);
       showStats(Object.assign({ step: meta.step || 1 }, meta));
       document.getElementById("resp-box").textContent = JSON.stringify(d, null, 2);
-
       var fb = (d.observation && d.observation.feedback) || d.feedback || "";
       if (reward >= 0.70) setAlert("✅ " + fb + " | Score: " + reward.toFixed(2) + " (" + pct + "%)", "ok");
       else if (reward >= 0.40) setAlert("⚠️ " + fb + " | Score: " + reward.toFixed(2) + " (" + pct + "%) — try improving your answer.", "warn");
       else setAlert("❌ " + fb + " | Score: " + reward.toFixed(2) + " (" + pct + "%) — key clinical details missing.", "err");
-
       if (d.done) started = false;
     })
     .catch(function(e){ setAlert("Step failed: " + e, "err"); });
 }
 
-// ── State ─────────────────────────────────────────────────────────────────────
 function doState() {
-  fetch("/state")
+  fetch(apiURL("/state"))
     .then(function(r){ return r.json(); })
     .then(function(s){
       document.getElementById("state-box").textContent = JSON.stringify(s, null, 2);
@@ -505,7 +382,6 @@ function doState() {
     .catch(function(e){ document.getElementById("state-box").textContent = "Error: " + e; });
 }
 
-// ── Fill example ──────────────────────────────────────────────────────────────
 function fillExample() {
   if (!currentExample) { setAlert("Reset a task first to load its example answer.", "info"); return; }
   document.getElementById("resp-input").value = currentExample;
@@ -513,15 +389,13 @@ function fillExample() {
 }
 function clearInput() { document.getElementById("resp-input").value = ""; }
 
-// ── Load task from sidebar ────────────────────────────────────────────────────
 function loadTask(taskId) {
   gotoPage("demo");
   doReset(taskId);
 }
 
-// ── Load tasks page ───────────────────────────────────────────────────────────
 function loadTasks() {
-  fetch("/tasks")
+  fetch(apiURL("/tasks"))
     .then(function(r){ return r.json(); })
     .then(function(data) {
       allTasks = data.tasks || [];
@@ -536,24 +410,15 @@ function loadTasks() {
 function renderTasks(tasks) {
   var grid = document.getElementById("tasks-grid");
   if (!tasks || !tasks.length) { grid.innerHTML = '<div style="color:var(--muted)">No tasks found.</div>'; return; }
-
   var html = "";
   tasks.forEach(function(t) {
     var dc = t.difficulty === "easy" ? "diff-easy" : t.difficulty === "hard" ? "diff-hard" : "diff-medium";
-    var hints = (t.scoring_hints || []).map(function(h){
-      return '<li>' + h + '</li>';
-    }).join("");
-
+    var hints = (t.scoring_hints || []).map(function(h){ return '<li>' + h + '</li>'; }).join("");
     html += '<div class="task-card">' +
-      '<div class="task-card-header">' +
-        '<div class="task-card-name">' + t.name + '</div>' +
-        '<span class="diff-badge ' + dc + '">' + t.difficulty.toUpperCase() + '</span>' +
-      '</div>' +
+      '<div class="task-card-header"><div class="task-card-name">' + t.name + '</div>' +
+      '<span class="diff-badge ' + dc + '">' + t.difficulty.toUpperCase() + '</span></div>' +
       '<div class="task-desc">' + t.description + '</div>' +
-      '<div class="task-score-range">' +
-        '📊 Score range: <b>' + t.score_range.min + '</b> – <b>' + t.score_range.max + '</b>' +
-        '&nbsp;·&nbsp;ID: <b>' + t.id + '</b>' +
-      '</div>' +
+      '<div class="task-score-range">📊 Score range: <b>' + t.score_range.min + '</b> – <b>' + t.score_range.max + '</b>&nbsp;·&nbsp;ID: <b>' + t.id + '</b></div>' +
       '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Example Input</div>' +
       '<div class="example-box">' + t.example_input + '</div>' +
       '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Grader Hints</div>' +
@@ -564,9 +429,8 @@ function renderTasks(tasks) {
   grid.innerHTML = html;
 }
 
-// ── Boot ──────────────────────────────────────────────────────────────────────
 window.onload = function() {
-  fetch("/tasks")
+  fetch(apiURL("/tasks"))
     .then(function(r){ return r.json(); })
     .then(function(data){ allTasks = data.tasks || []; })
     .catch(function(){});

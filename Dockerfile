@@ -10,7 +10,7 @@ FROM ${BASE_IMAGE} AS builder
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git curl && \
+    apt-get install -y --no-install-recommends git && \
     rm -rf /var/lib/apt/lists/*
 
 ARG BUILD_MODE=in-repo
@@ -51,13 +51,8 @@ COPY --from=builder /app/env /app/env
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH="/app/env:$PYTHONPATH"
 
-# Verify index.html is present at build time — fail loudly if missing
-RUN test -f /app/env/server/index.html || (echo "ERROR: server/index.html is missing!" && exit 1)
-
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:7860/health || exit 1
 
 EXPOSE 7860
-CMD ["python", "server/app.py"]
-
-RUN echo "FORCE REBUILD"
+CMD ["sh", "-c", "cd /app/env && uvicorn server.app:app --host 0.0.0.0 --port 7860"]

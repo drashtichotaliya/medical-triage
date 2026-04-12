@@ -3,262 +3,260 @@
 #
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
+
 """
 Pure-Python grader logic and scenario definitions.
 
-ZERO external dependencies — instantly importable for local testing and pytest.
-All grading is deterministic: keyword matching + positional scoring.
+This module has ZERO external dependencies (no openenv, no FastAPI, no httpx).
+This makes it instantly importable for local testing and pytest suites
+without triggering the openenv framework's network bootstrapping.
 
-Task layout:
-  Easy   — 2 scenarios: easy_mi, easy_dka
-  Medium — 3 scenarios: medium_pe, medium_meningitis, medium_aortic
-  Hard   — 2 scenarios: hard_mass_casualty, hard_sepsis_cascade
+The MedicalTriageEnvironment in medical_triage_env_environment.py
+delegates all grading logic to this module.
 """
+
 from typing import List
 
 
-# ── Easy Scenarios (2) ───────────────────────────────────────────────────────
+# ── Easy Scenarios ───────────────────────────────────────────────────────────
 
 EASY_SCENARIOS: List[dict] = [
     {
-        "id": "easy_mi",
+        "id": "easy_chest_pain",
         "case_report": """
-🚨 EMERGENCY CASE — 09:45 AM
-Severity: P2 | Patient ID: PT-001 | Duration: 45 minutes
+🚨 CASE REPORT — 02:47 UTC
+Triage Level: P2 | Duration: 12 minutes and ongoing
 
-Vitals:
-  BP: 185/115 mmHg (hypertensive)
-  HR: 112 bpm (tachycardia)
-  O2 Sat: 93% (hypoxic)
-  Temp: 37.2°C (normal)
+Vitals & Observations:
+  [CRITICAL] Cardiology: Chest pain radiating to left arm, onset 30 minutes ago
+  [CRITICAL] Cardiology: ECG shows ST-segment elevation in leads II, III, aVF
+  [WARN]     Nursing: Patient diaphoretic and nauseated
+  [ERROR]    Pharmacy: Aspirin and nitroglycerin not yet administered
+  [INFO]     Neurology: No focal neurological deficits
+  [INFO]     Orthopedics: No musculoskeletal complaints
 
-Presentation:
-  Chief Complaint: Crushing substernal chest pain radiating to left arm and jaw
-  Associated: Diaphoresis, nausea, shortness of breath
-  Duration: 45 minutes, not relieved by rest
+Patient reports: "Crushing chest pressure", "Pain going down my left arm", "Feeling dizzy"
 
-Diagnostics:
-  ECG: ST elevation in leads II, III, aVF — inferior STEMI pattern
-  Troponin I: 3.1 ng/mL (CRITICALLY HIGH — normal <0.04 ng/mL)
-  CK-MB: 48 U/L (elevated)
-  CBC: Normal
-  CXR: No pulmonary edema
-
-Question: What is the primary diagnosis and immediate treatment plan?
+Question: What is the PRIMARY diagnosis and immediate treatment priority?
 """,
-        "keywords": ["myocardial infarction", "heart attack", "mi", "stemi", "aspirin",
-                     "pci", "percutaneous coronary intervention", "thrombolysis", "cath lab",
-                     "heparin", "nitrates", "reperfusion"],
+        "keywords": ["myocardial infarction", "mi", "stemi", "heart attack", "ecg", "st elevation", "aspirin", "cardiac"],
         "required_count": 2,
     },
     {
-        "id": "easy_dka",
+        "id": "easy_anaphylaxis",
         "case_report": """
-🚨 EMERGENCY CASE — 14:20 PM
-Severity: P2 | Patient ID: PT-002 | Duration: 12 hours
+🚨 CASE REPORT — 09:15 UTC
+Triage Level: P1 | Duration: 7 minutes and ongoing
 
-Vitals:
-  BP: 92/58 mmHg (hypotensive)
-  HR: 124 bpm (tachycardia)
-  RR: 30/min (Kussmaul breathing)
-  Temp: 37.8°C
+Vitals & Observations:
+  [CRITICAL] Emergency: Urticaria and angioedema following peanut ingestion
+  [CRITICAL] Emergency: BP 80/50 mmHg, HR 130 bpm, SpO2 91%
+  [WARN]     Respiratory: Stridor and wheezing present
+  [ERROR]    Nursing: Epinephrine not yet administered
+  [INFO]     Gastroenterology: No abdominal tenderness
+  [INFO]     Dermatology: Widespread hives noted
 
-Presentation:
-  Chief Complaint: Confusion, profound weakness, vomiting for 12 hours
-  History: Type 1 Diabetes, missed insulin for 3 days
-  Breath: Fruity/acetone odor noted on exam
+Patient reports: "Can't breathe properly", "Throat feels tight", "Ate peanuts 10 minutes ago"
 
-Diagnostics:
-  Blood Glucose: 512 mg/dL (CRITICALLY HIGH)
-  pH: 7.14 (severe metabolic acidosis)
-  Bicarbonate: 8 mEq/L (critically low)
-  Anion Gap: 30 mEq/L (high — >12 is abnormal)
-  Serum Ketones: 4+ (large)
-  Potassium: 5.8 mEq/L (high — will drop with treatment)
-
-Question: What is the primary diagnosis and immediate treatment plan?
+Question: What is the PRIMARY diagnosis and immediate treatment priority?
 """,
-        "keywords": ["diabetic ketoacidosis", "dka", "insulin", "iv fluids", "normal saline",
-                     "potassium", "electrolyte", "bicarbonate", "glucose", "hydration"],
+        "keywords": ["anaphylaxis", "anaphylactic", "epinephrine", "adrenaline", "allergic", "epipen", "airway"],
+        "required_count": 2,
+    },
+    {
+        "id": "easy_hypoglycemia",
+        "case_report": """
+🚨 CASE REPORT — 16:32 UTC
+Triage Level: P2 | Duration: 5 minutes and ongoing
+
+Vitals & Observations:
+  [CRITICAL] Endocrinology: Blood glucose 38 mg/dL (normal: 70-99 mg/dL)
+  [CRITICAL] Endocrinology: Patient confused, trembling, diaphoretic
+  [WARN]     Neurology: Altered mental status, not oriented to time
+  [ERROR]    Nursing: Dextrose IV not yet administered
+  [INFO]     Cardiology: Heart rate 105 bpm, BP stable at 118/76
+  [INFO]     Nephrology: No renal abnormalities noted
+
+Patient history: Type 1 diabetic, skipped meal after insulin dose
+
+Question: What is the PRIMARY diagnosis and immediate treatment priority?
+""",
+        "keywords": ["hypoglycemia", "hypoglycaemia", "low blood sugar", "glucose", "dextrose", "insulin", "diabetic"],
         "required_count": 2,
     },
 ]
 
 
-# ── Medium Scenarios (3) ─────────────────────────────────────────────────────
+# ── Medium Scenarios ─────────────────────────────────────────────────────────
 
 MEDIUM_SCENARIOS: List[dict] = [
     {
-        "id": "medium_pe",
+        "id": "medium_sepsis",
         "case_report": """
-🚨 EMERGENCY CASE — 11:30 AM
-Severity: P1 | Patient ID: PT-004 | Duration: 2 hours
+🚨 CASE REPORT — 14:23 UTC
+Triage Level: P1 | Duration: 8 minutes and ongoing
 
-Signal A — Patient Presentation:
-  Chief Complaint: Sudden-onset dyspnea and pleuritic chest pain
-  History: 3-week post right total knee replacement, prolonged bed rest
-  Associated: Hemoptysis, right leg swelling and tenderness
+Signal A — Clinical presentation:
+  [CRITICAL] Emergency: Fever 39.8°C, HR 118 bpm, RR 24/min, BP 88/54 mmHg
+  [CRITICAL] Emergency: Altered mental status, patient confused
+  [WARN]     Emergency: Suspected source — urinary tract infection
 
-Signal B — Vitals & Objective Findings (ROOT CAUSE):
-  HR: 122 bpm (tachycardia)
-  O2 Sat: 87% on room air (cannot be explained by anxiety alone)
-  D-dimer: 3,200 ng/mL (CRITICALLY ELEVATED — >500 abnormal)
-  CT Pulmonary Angiography: Large filling defect in right main pulmonary artery
-  Echo: Right ventricular dilation, septal bowing — right heart strain
+Signal B — Lab results (ROOT CAUSE):
+  [CRITICAL] Pathology: WBC 18,400/μL with 85% neutrophils
+  [CRITICAL] Pathology: Lactate 4.2 mmol/L (severe tissue hypoperfusion)
+  [CRITICAL] Pathology: Blood cultures drawn, procalcitonin elevated
+  [INFO]     Pathology: Urine culture pending
 
-Signal C — Psychiatric Context (RED HERRING):
-  History: Generalized anxiety disorder, multiple prior panic attacks
-  Nursing note: "Patient appears anxious and hyperventilating"
-  Psychiatry consult 2 hours ago: Suggested possible somatic panic response
+Signal C — Imaging (RED HERRING):
+  [WARN]     Radiology: Chest X-ray shows mild cardiomegaly
+  [INFO]     Radiology: No acute pulmonary infiltrates
+  [INFO]     Radiology: Echocardiogram within normal limits
 
-Question: What is the ROOT CAUSE? Which signal is definitive and which is a red herring?
+Question: What is the ROOT CAUSE? Which signal confirms the diagnosis and which is a red herring?
 """,
-        "root_cause_keywords": ["pulmonary embolism", "pe", "embolism", "thromboembolism",
-                                 "blood clot", "dvt", "signal b", "anticoagulation",
-                                 "heparin", "anticoagulant", "thrombus"],
-        "red_herring_keywords": ["anxiety", "panic", "psychiatric", "signal c",
-                                  "red herring", "not the cause", "misleading",
-                                  "coincidental", "irrelevant"],
-        "symptom_keywords": ["shortness of breath", "dyspnea", "hemoptysis", "signal a",
-                              "leg swelling", "pleuritic"],
+        "root_cause_keywords": ["sepsis", "septic shock", "lactate", "infection", "wbc", "neutrophil", "signal b", "lab"],
+        "red_herring_keywords": ["cardiomegaly", "cardiac", "signal c", "radiology", "chest x-ray", "red herring", "misleading"],
+        "symptom_keywords": ["fever", "hypotension", "tachycardia", "signal a", "altered mental"],
+    },
+    {
+        "id": "medium_pulmonary_embolism",
+        "case_report": """
+🚨 CASE REPORT — 11:05 UTC
+Triage Level: P1 | Duration: 15 minutes and ongoing
+
+Signal A — Imaging (RED HERRING):
+  [WARN]     Radiology: Chest X-ray shows Hampton's hump opacity
+  [INFO]     Radiology: Non-specific finding, present in many conditions
+  [INFO]     Radiology: No pleural effusion detected
+
+Signal B — Clinical & Lab findings:
+  [CRITICAL] Emergency: Sudden dyspnea, pleuritic chest pain, HR 122 bpm
+  [CRITICAL] Emergency: SpO2 87% on room air, RR 28/min
+  [WARN]     Hematology: D-dimer markedly elevated at 3,400 ng/mL
+
+Signal C — Confirmatory imaging (ROOT CAUSE):
+  [CRITICAL] Radiology: CT pulmonary angiography — bilateral segmental filling defects
+  [CRITICAL] Radiology: Right heart strain pattern on ECG (S1Q3T3)
+  [CRITICAL] Radiology: Wells score 7 — high probability PE
+
+Question: What is the ROOT CAUSE? Which signal confirms the diagnosis and which is a red herring?
+""",
+        "root_cause_keywords": ["pulmonary embolism", "pe", "ct pulmonary", "filling defect", "signal c", "wells score", "anticoagul"],
+        "red_herring_keywords": ["hampton", "chest x-ray", "signal a", "non-specific", "red herring", "misleading", "irrelevant"],
+        "symptom_keywords": ["dyspnea", "d-dimer", "signal b", "tachycardia", "hypoxia"],
     },
     {
         "id": "medium_meningitis",
         "case_report": """
-🚨 EMERGENCY CASE — 03:15 AM
-Severity: P1 | Patient ID: PT-005 | Duration: 8 hours
+🚨 CASE REPORT — 00:01 UTC
+Triage Level: P1 | Duration: 3 minutes and ongoing
 
-Signal A — Clinical Presentation:
-  Chief Complaint: Severe thunderclap headache, neck stiffness, high fever — 8 hours
-  Signs: Kernig sign positive, Brudzinski sign positive, photophobia, phonophobia
-  Rash: Non-blanching petechial rash on trunk and extremities
-  History: College dormitory resident, no recent vaccinations
+Signal A — Clinical presentation:
+  [CRITICAL] Emergency: Severe headache, neck stiffness, photophobia, fever 40.1°C
+  [CRITICAL] Emergency: Positive Kernig's and Brudzinski's signs
+  [CRITICAL] Emergency: Petechial rash spreading rapidly
 
-Signal B — Stress and Social Context (RED HERRING):
-  High academic stress reported (final exam week)
-  Sleep-deprived (averaging 3-4 hours/night)
-  Counselor note: Known anxiety, history of tension headaches from stress
-  Roommate: "This happens every exam season"
+Signal B — Non-specific labs (RED HERRING):
+  [WARN]     Pathology: Mild transaminase elevation (AST 52, ALT 61)
+  [INFO]     Pathology: Liver function otherwise unremarkable
+  [INFO]     Pathology: No significant renal dysfunction
 
-Signal C — Lab and Diagnostic Findings (ROOT CAUSE):
-  Temp: 40.1°C, WBC: 19,400/μL (markedly elevated)
-  CSF: Cloudy/turbid, opening pressure 280 mmH2O (elevated)
-  CSF WBC: 1,800 cells/μL (95% neutrophils)
-  CSF Glucose: 22 mg/dL (LOW — normal 50-80), CSF Protein: 320 mg/dL (HIGH)
-  Gram Stain: Gram-negative diplococci
+Signal C — CSF analysis (ROOT CAUSE):
+  [CRITICAL] Pathology: CSF — turbid fluid, opening pressure 340 mmH2O
+  [CRITICAL] Pathology: WBC 3,200 cells/μL (95% neutrophils), glucose critically low
+  [CRITICAL] Pathology: Gram-positive diplococci on CSF Gram stain
 
-Question: What is the ROOT CAUSE? Which signal is definitive and which is a red herring?
+Question: What is the ROOT CAUSE? Which signal confirms the diagnosis and which is a red herring?
 """,
-        "root_cause_keywords": ["meningitis", "bacterial meningitis", "meningococcal",
-                                 "neisseria meningitidis", "signal c", "ceftriaxone",
-                                 "penicillin", "antibiotics", "dexamethasone"],
-        "red_herring_keywords": ["stress", "anxiety", "tension headache", "sleep", "signal b",
-                                  "red herring", "not the cause", "misleading",
-                                  "coincidental", "irrelevant"],
-        "symptom_keywords": ["headache", "neck stiffness", "fever", "signal a",
-                              "kernig", "petechial", "photophobia"],
-    },
-    {
-        "id": "medium_aortic",
-        "case_report": """
-🚨 EMERGENCY CASE — 16:45 PM
-Severity: P1 | Patient ID: PT-006 | Duration: 90 minutes
-
-Signal A — Patient Presentation:
-  Chief Complaint: Sudden tearing/ripping chest pain radiating to the back between shoulder blades
-  History: Hypertension (poorly controlled), Marfan syndrome
-  Key Finding: BP asymmetry — Right arm 188/112, Left arm 128/78 (60 mmHg difference)
-
-Signal B — Initial Cardiac Workup (RED HERRING):
-  Troponin I: 0.09 ng/mL (mildly elevated — non-specific)
-  ECG: Non-specific ST changes, no clear STEMI pattern
-  ER Resident Assessment: "Likely atypical presentation of acute MI"
-  Cardiology note: "Consider ACS, start heparin"
-
-Signal C — Imaging (ROOT CAUSE):
-  CXR: Widened mediastinum (8.5cm)
-  CT Aortogram: Type A aortic dissection — intimal flap in ascending aorta
-  Echo: Moderate aortic regurgitation, small pericardial effusion
-
-Question: What is the ROOT CAUSE? Which signal is definitive and which is a red herring?
-""",
-        "root_cause_keywords": ["aortic dissection", "dissection", "type a", "aorta",
-                                 "signal c", "cardiothoracic surgery", "emergency surgery",
-                                 "surgical", "mediastinum"],
-        "red_herring_keywords": ["myocardial infarction", "heart attack", "acs",
-                                  "heparin", "signal b", "red herring", "not the cause",
-                                  "misleading", "coincidental", "irrelevant", "troponin"],
-        "symptom_keywords": ["chest pain", "tearing", "ripping", "signal a",
-                              "hypertension", "asymmetric", "blood pressure"],
+        "root_cause_keywords": ["meningitis", "csf", "gram stain", "signal c", "lumbar puncture", "diplococci", "bacterial"],
+        "red_herring_keywords": ["transaminase", "liver", "signal b", "alt", "ast", "red herring", "misleading", "irrelevant"],
+        "symptom_keywords": ["kernig", "brudzinski", "signal a", "neck stiffness", "petechial"],
     },
 ]
 
 
-# ── Hard Scenarios (2) ───────────────────────────────────────────────────────
+# ── Hard Scenarios ───────────────────────────────────────────────────────────
 
 HARD_SCENARIOS: List[dict] = [
     {
-        "id": "hard_mass_casualty",
+        "id": "hard_polytrauma",
         "case_report": """
-🚨 MASS CASUALTY INCIDENT — 20:30 PM
-Severity: P0 — Multi-patient | Duration: Ongoing
+🚨 CASE REPORT — 03:15 UTC
+Triage Level: P0 — Critical | Duration: 23 minutes and escalating
 
-Patient Routing: EMS Dispatch → Trauma Bay → ICU/OR
-Resources: 1 trauma surgeon, 2 trauma bays, 1 ventilator
+Patient map: Airway → Breathing → Circulation → Disability → Exposure (ABCDE)
+             Trauma → TBI → Hemorrhage → Fractures → Internal injuries
 
-Patient Reports:
-  [PATIENT A] 45M — GSW to chest, BP: 78/48 (shock), HR: 138, GCS: 10
-                      Absent breath sounds right side, tracheal deviation LEFT
-                      Clinical: Tension pneumothorax suspected
-  [PATIENT B] 32F — Open femur fracture, BP: 102/72, HR: 108, GCS: 15
-                      Active hemorrhage — tourniquet applied, conscious and talking
-                      Distal pulses intact
-  [PATIENT C] 67M — Witnessed cardiac arrest, CPR in progress x14 minutes
-                      No shockable rhythm on monitor (PEA), 3 rounds epinephrine given
-                      Downtime: 14 minutes, no bystander CPR initially
+Findings:
+  [CRITICAL] Airway: GCS 8, unprotected airway, gurgling respirations
+  [CRITICAL] Breathing: Left-sided absent breath sounds, tracheal deviation RIGHT
+  [CRITICAL] Circulation: BP 74/40, HR 138, 2L blood loss estimated
+  [WARN]     Disability: Left pupil dilated and non-reactive
+  [ERROR]    Orthopedics: Open femur fracture, active arterial bleeding
+  [ERROR]    Neurosurgery: CT head — epidural hematoma, midline shift 6mm
+  [WARN]     Radiology: Splenic laceration grade III on FAST exam
 
-Question: Write a PRIORITIZED action plan — FIRST, SECOND, THIRD patient and WHY.
+Recent events:
+  03:01 UTC — High-speed MVA, unrestrained driver
+  02:45 UTC — Patient was ambulatory at scene, now unconscious
+
+Question: Write a PRIORITIZED action plan — FIRST, SECOND, THIRD steps to stabilize this patient and WHY.
 """,
-        "first_keywords": ["patient a", "tension pneumothorax", "needle decompression",
-                            "chest decompression", "a first", "treat a", "needle thoracostomy",
-                            "immediate", "airway", "pneumothorax"],
-        "second_keywords": ["patient b", "femur", "fracture", "hemorrhage", "transfusion",
-                             "b second", "blood", "ortho", "vascular", "bleeding"],
-        "third_keywords": ["patient c", "cardiac arrest", "cpr", "poor prognosis",
-                            "c third", "expectant", "resuscitation", "pea", "downtime"],
+        "first_keywords": ["airway", "intubation", "intubate", "rsi", "rapid sequence", "gcs", "tension pneumothorax", "needle decompression", "breathing"],
+        "second_keywords": ["circulation", "hemorrhage", "bleeding", "transfusion", "blood", "bp", "pressure", "femur", "tourniquet"],
+        "third_keywords": ["neurosurgery", "hematoma", "epidural", "spleen", "splenic", "ct", "fracture", "disability"],
     },
     {
-        "id": "hard_sepsis_cascade",
+        "id": "hard_multiorgan",
         "case_report": """
-🚨 SIMULTANEOUS MULTI-PATIENT EMERGENCY — 08:15 AM
-Severity: P0 — ICU Critical | Duration: 45 minutes
+🚨 CASE REPORT — 18:44 UTC
+Triage Level: P0 — Critical | Duration: 31 minutes and escalating
 
-Resources: 1 intensivist, 2 nurses, 1 IV team, 1 ventilator available
+Patient map: ICU → Ventilator → Vasopressors → Dialysis → Antibiotics
 
-Patient Reports:
-  [PATIENT X] 72M — Septic shock, BP: 68/42, HR: 142, Temp: 40.4°C
-                      Lactate: 7.1 mmol/L, vasopressors escalating (norepinephrine max dose)
-                      Suspected gram-negative bacteremia — blood cultures pending x2 hours
-                      Multi-organ dysfunction: Cr 3.2, bili 4.8, platelets falling
-  [PATIENT Y] 28F — Severe acute asthma exacerbation, O2 Sat: 81% on 15L NRB
-                      Peak flow <20% predicted, silent chest developing
-                      Not responding to back-to-back nebulizers x3, IV magnesium given
-                      Accessory muscle use, tripod positioning, unable to speak in sentences
-  [PATIENT Z] 55M — Found unconscious at home, blood glucose: 32 mg/dL (CRITICALLY LOW)
-                      Family reports insulin overdose (took 5x normal dose 1 hour ago)
-                      No IV access yet, GCS: 6 (E1V2M3)
+Findings:
+  [CRITICAL] Pulmonology: PaO2/FiO2 ratio 88 — severe ARDS, refractory hypoxemia
+  [CRITICAL] Nephrology: Creatinine 6.8 mg/dL, urine output <10 mL/hr — anuric AKI
+  [CRITICAL] Cardiology: MAP 52 mmHg despite norepinephrine 0.4 mcg/kg/min
+  [ERROR]    Hematology: Platelets 28,000/μL, PT/INR 3.2 — DIC pattern
+  [ERROR]    Microbiology: Blood cultures — Gram-negative bacteremia (48hr result)
+  [WARN]     Gastroenterology: Ileus, unable to absorb enteral nutrition
 
-Question: Write a PRIORITIZED action plan — FIRST, SECOND, THIRD patient and WHY.
+Recent events:
+  18:30 UTC — Antibiotics not yet broadened despite positive blood cultures
+  18:15 UTC — Vasopressor dose not escalated despite falling MAP
+
+Question: Write a PRIORITIZED action plan — FIRST, SECOND, THIRD steps to stabilize this patient and WHY.
 """,
-        "first_keywords": ["patient z", "hypoglycemia", "glucose", "dextrose", "d50",
-                            "d10", "glucagon", "z first", "treat z", "sugar", "immediate reversal",
-                            "blood sugar", "iv glucose"],
-        "second_keywords": ["patient y", "asthma", "intubation", "ventilator", "intubate",
-                             "ketamine", "rsi", "y second", "airway", "silent chest",
-                             "respiratory failure", "breathing"],
-        "third_keywords": ["patient x", "sepsis", "antibiotics", "broad spectrum",
-                            "vasopressors", "cultures", "x third", "septic shock",
-                            "blood cultures", "source control"],
+        "first_keywords": ["antibiotic", "antimicrobial", "bacteremia", "sepsis", "culture", "broad spectrum", "meropenem", "vancomycin", "source control"],
+        "second_keywords": ["vasopressor", "norepinephrine", "map", "hemodynamic", "shock", "vasopressin", "blood pressure", "circulation"],
+        "third_keywords": ["dialysis", "renal replacement", "ards", "ventilator", "prone", "dic", "coagulopathy", "platelet", "nutrition"],
+    },
+    {
+        "id": "hard_pediatric_emergency",
+        "case_report": """
+🚨 CASE REPORT — 22:05 UTC
+Triage Level: P0 — Partial critical | Duration: 18 minutes and escalating
+
+Patient map: Pediatric ED → Airway → Seizure Control → Metabolic → Imaging
+
+Findings:
+  [CRITICAL] Neurology: Active generalized tonic-clonic seizure, duration >15 min — status epilepticus
+  [CRITICAL] Neurology: Lorazepam 0.1 mg/kg given x2 — seizure not aborted
+  [CRITICAL] Metabolic: Blood glucose 28 mg/dL, sodium 118 mEq/L (severe hyponatremia)
+  [WARN]     Respiratory: SpO2 88%, airway compromised by ongoing convulsions
+  [ERROR]    Pharmacy: Second-line anticonvulsant (levetiracetam/fosphenytoin) not yet ordered
+  [INFO]     Radiology: CT head pending — no results yet
+
+Recent events:
+  22:00 UTC — 4-year-old, 16 kg child, brought in by parents after prolonged home seizure
+  21:50 UTC — No prior seizure history, recent gastroenteritis for 3 days
+
+Question: Write a PRIORITIZED action plan — FIRST, SECOND, THIRD steps to manage this patient and WHY.
+""",
+        "first_keywords": ["airway", "oxygen", "spo2", "seizure", "benzodiazepine", "lorazepam", "second-line", "levetiracetam", "fosphenytoin", "anticonvulsant"],
+        "second_keywords": ["glucose", "dextrose", "hypoglycemia", "sodium", "hyponatremia", "metabolic", "electrolyte", "saline"],
+        "third_keywords": ["ct", "imaging", "neurosurgery", "intubation", "icu", "admit", "eeg", "cause", "meningitis"],
     },
 ]
 
@@ -266,31 +264,29 @@ Question: Write a PRIORITIZED action plan — FIRST, SECOND, THIRD patient and W
 # ── Graders ──────────────────────────────────────────────────────────────────
 
 def safe_reward(raw: float) -> float:
-    """Clamp reward strictly between 0.01 and 0.99 for OpenEnv validation compliance."""
+    """Clamp the reward strictly between 0.01 and 0.99 to pass OpenEnv validation constraints."""
     return round(min(max(float(raw), 0.01), 0.99), 2)
 
 
 def grade_easy(response: str, scenario: dict) -> float:
     r = response.lower()
+    score = 0.0
     keywords = scenario["keywords"]
     required = scenario["required_count"]
 
-    hits = sum(
-        1 for kw in keywords
-        if kw in r and f"not {kw}" not in r and f"not a {kw}" not in r
-    )
+    hits = sum(1 for kw in keywords if kw in r and f"not {kw}" not in r and f"not a {kw}" not in r)
 
-    score = 0.0
     if hits >= required:
-        score = 0.5 + min(0.45, (hits - required) * 0.1 + 0.3)
+        score = 0.5 + min(0.5, (hits - required) * 0.1 + 0.3)
     elif hits == 1:
         score = 0.3
 
-    causal_terms = ["diagnosis is", "consistent with", "indicates", "confirms",
-                    "due to", "because", "caused by", "suggests", "treatment"]
-    if any(term in r for term in causal_terms):
+    # Bonus for mentioning diagnosis or treatment clearly
+    root_cause_terms = ["diagnosis", "treat", "administer", "immediate", "priority", "caused by", "due to", "indicating"]
+    if any(term in r for term in root_cause_terms):
         score = min(1.0, score + 0.1)
 
+    # Cap easy score to 0.95 max
     return safe_reward(min(score, 0.95))
 
 
@@ -298,9 +294,14 @@ def grade_medium(response: str, scenario: dict) -> float:
     r = response.lower()
     score = 0.0
 
+    target_signal = ""
+    if scenario["id"] == "medium_sepsis": target_signal = "signal b"
+    if scenario["id"] == "medium_pulmonary_embolism": target_signal = "signal c"
+    if scenario["id"] == "medium_meningitis": target_signal = "signal c"
+
+    # Root cause identification (35%)
     root_hits = sum(1 for kw in scenario["root_cause_keywords"] if kw in r)
-    causal_terms = ["because", "due to", "confirms", "demonstrates", "indicates",
-                    "primary", "caused by", "root cause", "definitive"]
+    causal_terms = ["because", "due to", "since", "causes", "resulting", "as a result", "leads to", "confirms", "indicates", "consistent with"]
     has_explanation = any(term in r for term in causal_terms)
 
     if root_hits >= 2 and has_explanation:
@@ -310,76 +311,101 @@ def grade_medium(response: str, scenario: dict) -> float:
     elif root_hits >= 1:
         score += 0.05
 
-    strict_dismissal = ["red herring", "misleading", "not the cause", "false alarm",
-                        "coincidental", "irrelevant", "distractor"]
-    dismissal_hits = sum(1 for term in strict_dismissal if term in r)
-    signal_hits = sum(1 for kw in scenario["red_herring_keywords"] if kw in r)
+    # Red herring explicit identification (30%)
+    strict_dismissal_terms = [
+        "red herring", "false alarm", "misleading", "non-specific",
+        "coincidental", "irrelevant", "not related", "incidental"
+    ]
+    dismissal_hits = sum(1 for kw in strict_dismissal_terms if kw in r)
+    signal_ident_hits = sum(1 for kw in scenario["red_herring_keywords"] if kw in r)
 
-    red_herring_identified = dismissal_hits >= 1 and signal_hits >= 1
+    red_herring_identified = dismissal_hits >= 1 and signal_ident_hits >= 1
     if red_herring_identified:
         score += 0.30
 
+    # Symptom identification (15%)
     symptom_hits = sum(1 for kw in scenario["symptom_keywords"] if kw in r)
     if symptom_hits >= 1:
         score += 0.15
 
-    target = ""
-    if scenario["id"] == "medium_pe":
-        target = "signal b"
-    elif scenario["id"] == "medium_meningitis":
-        target = "signal c"
-    elif scenario["id"] == "medium_aortic":
-        target = "signal c"
-    if target and target in r:
+    # Correct signal letter explicitly named as root cause (10% bonus)
+    if target_signal and (target_signal in r):
         score += 0.10
 
+    # Hard cap if red herring not explicitly identified
     if not red_herring_identified:
         score = min(score, 0.45)
 
+    # Medium ceiling: 0.80
     return safe_reward(min(score, 0.80))
 
 
 def grade_hard(response: str, scenario: dict) -> float:
     r = response.lower()
+    score = 0.0
     lines = [line for line in r.split("\n") if line.strip()]
 
     if not lines:
         return 0.01
 
+    # Split into thirds
     third = max(1, len(lines) // 3)
     first_part = " ".join(lines[:third])
     mid_part = " ".join(lines[third:2 * third])
     last_part = " ".join(lines[2 * third:])
 
-    wrong_first_penalty = 0.0
-    if scenario["id"] == "hard_mass_casualty":
-        if any(kw in first_part for kw in ["patient b", "patient c"]):
-            wrong_first_penalty = 0.2
-    elif scenario["id"] == "hard_sepsis_cascade":
-        if any(kw in first_part for kw in ["patient x", "patient y", "sepsis", "asthma"]):
-            wrong_first_penalty = 0.2
+    wrong_service_penalty = 0.0
+    # Penalize if a lower-priority issue is treated as the primary action
+    if scenario["id"] == "hard_polytrauma":
+        if "hematoma" in first_part or "splenic" in first_part or "femur" in first_part:
+            wrong_service_penalty = 0.2
+    elif scenario["id"] == "hard_multiorgan":
+        if "dialysis" in first_part or "ards" in first_part or "dic" in first_part:
+            wrong_service_penalty = 0.2
+    elif scenario["id"] == "hard_pediatric_emergency":
+        if "ct" in first_part or "imaging" in first_part or "icu" in first_part:
+            wrong_service_penalty = 0.2
 
-    first_score = 0.40 if any(kw in first_part for kw in scenario["first_keywords"]) else 0.0
-    second_score = 0.30 if any(kw in mid_part for kw in scenario["second_keywords"]) else 0.0
-    third_score = 0.20 if any(kw in last_part for kw in scenario["third_keywords"]) else 0.0
+    # First action (40%)
+    first_in_position = any(kw in first_part for kw in scenario["first_keywords"])
+    if first_in_position:
+        score += 0.40
 
+    # Second action (30%)
+    second_in_position = any(kw in mid_part for kw in scenario["second_keywords"])
+    if second_in_position:
+        score += 0.30
+
+    # Third action (20%)
+    third_in_position = any(kw in last_part for kw in scenario["third_keywords"])
+    if third_in_position:
+        score += 0.20
+
+    # Exclusivity penalty: penalize if lower-priority items appear in the first section
     exclusivity_penalty = 0.0
     if any(kw in first_part for kw in scenario["second_keywords"]):
         exclusivity_penalty += 0.15
     if any(kw in first_part for kw in scenario["third_keywords"]):
         exclusivity_penalty += 0.15
 
-    priority_terms = ["first", "second", "third", "step 1", "step 2", "step 3",
-                      "immediately", "then", "finally", "priority"]
-    bonus = 0.10 if sum(1 for t in priority_terms if t in r) >= 3 else 0.0
+    # Bonus for explicit prioritization language (10%)
+    priority_terms = ["first", "second", "third", "priority", "immediately", "then", "finally",
+                      "step 1", "step 2", "step 3", "next", "subsequently"]
+    priority_hits = sum(1 for term in priority_terms if term in r)
+    if priority_hits >= 3:
+        score += 0.10
 
-    score = first_score + second_score + third_score + bonus
-    score -= wrong_first_penalty + exclusivity_penalty
+    # Apply penalties
+    score -= wrong_service_penalty
+    score -= exclusivity_penalty
 
-    if first_score == 0:
-        score = min(score, 0.40)
+    # Cap if most critical action not addressed first
+    if not first_in_position:
+        score = min(score, 0.4)
 
+    # Require at least 5 lines for any score above 0.5
     if len(lines) < 5:
-        score = min(score, 0.30)
+        score = min(score, 0.3)
 
+    # Hard ceiling: 0.75
     return safe_reward(min(score, 0.75))

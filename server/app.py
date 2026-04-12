@@ -244,5 +244,10 @@ def main(host: str = "0.0.0.0", port: int = 7860):
     uvicorn.run(app, host=host, port=port)
 
 
+    import uvicorn
+import os
+
 if __name__ == "__main__":
-    main()
+    port = int(os.environ.get("PORT", 7860))
+    print(f"🔥 Running on PORT: {port}")
+    uvicorn.run("server.app:app", host="0.0.0.0", port=port)
